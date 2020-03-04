@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.102
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -45,6 +45,9 @@ Provides: kernel-uname-r = %{uname}
 Provides: kernel = %{version}-%{release}
 Provides: kernel-%{_arch} = %{version}-%{release}
 Requires(post): coreutils kmod
+# xcp-python-libs required for handling grub configuration
+Requires(post): xcp-python-libs
+Requires(postun): xcp-python-libs
 Requires(posttrans): coreutils dracut kmod
 
 
@@ -553,8 +556,10 @@ find %{buildroot} -name '.*.cmd' -type f -delete
 
 depmod -ae -F /boot/System.map-%{uname} %{uname}
 
-mkdir -p %{_rundir}/reboot-required.d/%{name}
-> %{_rundir}/reboot-required.d/%{name}/%{version}-%{release}
+if [ $1 == 1 ]; then
+    # add grub entry upon initial installation
+    python /usr/lib/python2.7/site-packages/xcp/updategrub.py --add %{uname}
+fi
 
 %posttrans
 depmod -ae -F /boot/System.map-%{uname} %{uname}
@@ -562,6 +567,12 @@ depmod -ae -F /boot/System.map-%{uname} %{uname}
 if [ -e %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{uname} ]; then
     rm %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{uname}
     dracut -f /boot/initrd-%{uname}.img %{uname}
+fi
+
+%postun
+if [ $1 == 0 ]; then
+    # remove grub entry upon uninstallation
+    python /usr/lib/python2.7/site-packages/xcp/updategrub.py --remove %{uname}
 fi
 
 %files
@@ -614,6 +625,10 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Wed Mar 04 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.102-2
+- Handle grub boot entry for kernel-alt
+- Add dependency on xcp-python-libs for updategrub.py
+
 * Thu Feb 06 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.102-1
 - Update patch level to 4.19.102
 
