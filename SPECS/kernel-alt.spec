@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.102
-Release: 2%{?dist}
+Release: 3%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -46,7 +46,7 @@ Provides: kernel = %{version}-%{release}
 Provides: kernel-%{_arch} = %{version}-%{release}
 Requires(post): coreutils kmod
 # xcp-python-libs required for handling grub configuration
-Requires(post): xcp-python-libs
+Requires(post): xcp-python-libs >= 2.3.2-1.2.xcpng8.1
 Requires(postun): xcp-python-libs
 Requires(posttrans): coreutils dracut kmod
 
@@ -557,8 +557,13 @@ find %{buildroot} -name '.*.cmd' -type f -delete
 depmod -ae -F /boot/System.map-%{uname} %{uname}
 
 if [ $1 == 1 ]; then
-    # add grub entry upon initial installation
-    python /usr/lib/python2.7/site-packages/xcp/updategrub.py --add %{uname}
+    # Add grub entry upon initial installation if the package is installed manually
+    # During system installation, the bootloader isn't installed yet so grub is updated as a later task.
+    if [ -f /boot/grub/grub.cfg -o -f /boot/grub/grub-efi.cfg ]; then
+        python /usr/lib/python2.7/site-packages/xcp/updategrub.py --add %{uname}
+    else
+        echo "Skipping grub configuration during host installation."
+    fi
 fi
 
 %posttrans
@@ -572,7 +577,7 @@ fi
 %postun
 if [ $1 == 0 ]; then
     # remove grub entry upon uninstallation
-    python /usr/lib/python2.7/site-packages/xcp/updategrub.py --remove %{uname}
+    python /usr/lib/python2.7/site-packages/xcp/updategrub.py --remove %{uname} || true
 fi
 
 %files
@@ -625,6 +630,10 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Mar 05 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.102-3
+- Version requires to xcp-python-libs
+- Do not try to update grub during host installation
+
 * Wed Mar 04 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.102-2
 - Handle grub boot entry for kernel-alt
 - Add dependency on xcp-python-libs for updategrub.py
