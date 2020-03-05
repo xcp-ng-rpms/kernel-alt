@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.102
-Release: 3%{?dist}
+Release: 4%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -559,7 +559,7 @@ depmod -ae -F /boot/System.map-%{uname} %{uname}
 if [ $1 == 1 ]; then
     # Add grub entry upon initial installation if the package is installed manually
     # During system installation, the bootloader isn't installed yet so grub is updated as a later task.
-    if [ -f /boot/grub/grub.cfg -o -f /boot/grub/grub-efi.cfg ]; then
+    if [ -f /boot/grub/grub.cfg -o -f /boot/efi/EFI/xenserver/grub.cfg ]; then
         python /usr/lib/python2.7/site-packages/xcp/updategrub.py --add %{uname}
     else
         echo "Skipping grub configuration during host installation."
@@ -630,6 +630,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Mar 05 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.102-4
+- Fix detection of installed bootloader for EFI in POST
+
 * Thu Mar 05 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.102-3
 - Version requires to xcp-python-libs
 - Do not try to update grub during host installation
