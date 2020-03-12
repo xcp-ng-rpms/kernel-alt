@@ -1322,18 +1322,6 @@ index e75661f92daa..abcf53a6db04 100644
  u32 tcp_slow_start(struct tcp_sock *tp, u32 acked);
  void tcp_cong_avoid_ai(struct tcp_sock *tp, u32 w, u32 acked);
  
-@@ -1646,6 +1647,11 @@ static inline struct sk_buff *tcp_rtx_queue_head(const struct sock *sk)
- 	return skb_rb_first(&sk->tcp_rtx_queue);
- }
- 
-+static inline struct sk_buff *tcp_rtx_queue_tail(const struct sock *sk)
-+{
-+	return skb_rb_last(&sk->tcp_rtx_queue);
-+}
-+
- static inline struct sk_buff *tcp_write_queue_head(const struct sock *sk)
- {
- 	return skb_peek(&sk->sk_write_queue);
 diff --git a/include/net/tls.h b/include/net/tls.h
 index 954110575891..98f5ad0319a2 100644
 --- a/include/net/tls.h
@@ -1868,37 +1856,6 @@ index bc6c02f16243..48f79db446a0 100644
  		err = -EPERM;
  	} else if (!try_module_get(ca->owner)) {
  		err = -EBUSY;
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 221d9b72423b..88c7e821fd11 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1289,6 +1289,7 @@ int tcp_fragment(struct sock *sk, enum tcp_queue tcp_queue,
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	struct sk_buff *buff;
- 	int nsize, old_factor;
-+	long limit;
- 	int nlen;
- 	u8 flags;
- 
-@@ -1299,8 +1300,16 @@ int tcp_fragment(struct sock *sk, enum tcp_queue tcp_queue,
- 	if (nsize < 0)
- 		nsize = 0;
- 
--	if (unlikely((sk->sk_wmem_queued >> 1) > sk->sk_sndbuf &&
--		     tcp_queue != TCP_FRAG_IN_WRITE_QUEUE)) {
-+	/* tcp_sendmsg() can overshoot sk_wmem_queued by one full size skb.
-+	 * We need some allowance to not penalize applications setting small
-+	 * SO_SNDBUF values.
-+	 * Also allow first and last skb in retransmit queue to be split.
-+	 */
-+	limit = sk->sk_sndbuf + 2 * SKB_TRUESIZE(GSO_MAX_SIZE);
-+	if (unlikely((sk->sk_wmem_queued >> 1) > limit &&
-+		     tcp_queue != TCP_FRAG_IN_WRITE_QUEUE &&
-+		     skb != tcp_rtx_queue_head(sk) &&
-+		     skb != tcp_rtx_queue_tail(sk))) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPWQUEUETOOBIG);
- 		return -ENOMEM;
- 	}
 diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
 index a6c0479c1d55..bbb5ffb3397d 100644
 --- a/net/ipv6/ip6_fib.c
