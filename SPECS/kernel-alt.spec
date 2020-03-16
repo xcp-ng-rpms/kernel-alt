@@ -1,4 +1,4 @@
-%define uname 4.19.102
+%define uname 4.19.108
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -22,8 +22,8 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: 4.19.102
-Release: 4%{?dist}
+Version: 4.19.108
+Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -58,8 +58,6 @@ Source3: SOURCES/kernel/check-kabi
 Source4: SOURCES/kernel/Module.kabi
 
 Patch0: 0001-Fix-net-ipv4-do-not-handle-duplicate-fragments-as-ov.patch
-Patch1: 0001-mm-zero-remaining-unavailable-struct-pages.patch
-Patch2: 0002-mm-return-zero_resv_unavail-optimization.patch
 Patch3: 0001-mtip32xx-fully-switch-to-the-generic-DMA-API.patch
 Patch4: 0002-mtip32xx-clean-an-indentation-issue-remove-extraneou.patch
 Patch5: 0001-GFS2-Flush-the-GFS2-delete-workqueue-before-stopping.patch
@@ -136,7 +134,6 @@ Patch75: CA-285778-emulex-nic-ip-hdr-len.patch
 Patch76: cifs-Change-the-default-value-SecFlags-to-0x83.patch
 Patch77: call-kexec-before-offlining-noncrashing-cpus.patch
 Patch78: 0001-Revert-rtc-cmos-Do-not-assume-irq-8-for-rtc-when-the.patch
-Patch79: mm-zero-last-section-tail.patch
 Patch80: hide-hung-task-for-idle-class.patch
 Patch81: xfs-async-wait.patch
 Patch82: 0001-xen-netback-Reset-nr_frags-before-freeing-skb.patch
@@ -313,6 +310,14 @@ Patch1084: patch-4.19.98-99
 Patch1085: patch-4.19.99-100
 Patch1086: patch-4.19.100-101
 Patch1087: patch-4.19.101-102
+Patch1088: patch-4.19.102-103-pre
+Patch1089: patch-4.19.102-103
+Patch1090: patch-4.19.103-104
+Patch1091: patch-4.19.104-105
+Patch1092: patch-4.19.105-106
+Patch1093: patch-4.19.106-107
+Patch1094: patch-4.19.107-108-pre
+Patch1095: patch-4.19.107-108
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
@@ -630,6 +635,13 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Mar 12 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.108-1
+- Update patch level to 4.19.108
+- Removed following patches as they are now part of upstream
+  Patch1: 0001-mm-zero-remaining-unavailable-struct-pages.patch
+  Patch2: 0002-mm-return-zero_resv_unavail-optimization.patch
+  Patch79: mm-zero-last-section-tail.patch
+
 * Thu Mar 05 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.102-4
 - Fix detection of installed bootloader for EFI in POST
 
