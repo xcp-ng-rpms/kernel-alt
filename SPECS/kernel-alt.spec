@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.108
-Release: 2%{?dist}
+Release: 3%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -366,12 +366,13 @@ Requires: elfutils-libelf-devel
 This package provides kernel headers and makefiles sufficient to build modules
 against the %{uname} kernel.
 
-%package -n perf
+%package -n perf-alt
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Summary: Performance monitoring for the Linux kernel
 License: GPLv2
-%description -n perf
+Conflicts: perf
+%description -n perf-alt
 This package contains the perf tool, which enables performance monitoring
 of the Linux kernel.
 
@@ -380,12 +381,13 @@ of the Linux kernel.
 written in the Python programming language to use the interface \
 to manipulate perf events.
 
-%package -n python2-perf
+%package -n python2-perf-alt
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Summary: %{pythonperfsum}
-Provides: python2-perf
-%description -n python2-perf
+Provides: python2-perf-alt
+Conflicts: python2-perf
+%description -n python2-perf-alt
 %{pythonperfdesc}
 
 %prep
@@ -648,7 +650,7 @@ fi
 %verify(not mtime) /usr/src/kernels/%{uname}-%{_arch}
 %{_rpmconfigdir}/macros.d/macros.kernel
 
-%files -n perf
+%files -n perf-alt
 %{_bindir}/perf
 %dir %{_libdir}/traceevent
 %{_libdir}/traceevent/plugins/
@@ -659,11 +661,15 @@ fi
 %doc tools/perf/Documentation/examples.txt
 %license COPYING
 
-%files -n python2-perf
+%files -n python2-perf-alt
 %license COPYING
 %{python2_sitearch}/*
 
 %changelog
+* Mon Mar 23 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.108-3
+- Rename perf to perf-alt and python2-perf to python2-perf-alt
+- Avoids overriding main kernel's perf and perf-alt in base repo
+
 * Fri Mar 20 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.108-2
 - Update scriptlet dependencies to latest xcp-python-libs for latest updategrub.py
 - Handle grub update in all scenarios: install, update (various cases), uninstall
