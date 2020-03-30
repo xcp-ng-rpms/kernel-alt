@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.108
-Release: 1%{?dist}
+Release: 3%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -46,8 +46,9 @@ Provides: kernel = %{version}-%{release}
 Provides: kernel-%{_arch} = %{version}-%{release}
 Requires(post): coreutils kmod
 # xcp-python-libs required for handling grub configuration
-Requires(post): xcp-python-libs >= 2.3.2-1.2.xcpng8.1
-Requires(postun): xcp-python-libs
+Requires(post): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
+Requires(postun): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
+Requires(posttrans): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
 Requires(posttrans): coreutils dracut kmod
 
 
@@ -365,12 +366,13 @@ Requires: elfutils-libelf-devel
 This package provides kernel headers and makefiles sufficient to build modules
 against the %{uname} kernel.
 
-%package -n perf
+%package -n perf-alt
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Summary: Performance monitoring for the Linux kernel
 License: GPLv2
-%description -n perf
+Conflicts: perf
+%description -n perf-alt
 This package contains the perf tool, which enables performance monitoring
 of the Linux kernel.
 
@@ -379,12 +381,13 @@ of the Linux kernel.
 written in the Python programming language to use the interface \
 to manipulate perf events.
 
-%package -n python2-perf
+%package -n python2-perf-alt
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Summary: %{pythonperfsum}
-Provides: python2-perf
-%description -n python2-perf
+Provides: python2-perf-alt
+Conflicts: python2-perf
+%description -n python2-perf-alt
 %{pythonperfdesc}
 
 %prep
@@ -557,7 +560,7 @@ touch -r %{buildroot}%{srcpath}/Makefile %{buildroot}%{srcpath}/include/generate
 find %{buildroot} -name '.*.cmd' -type f -delete
 
 %post
-> %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{uname}
+> %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{name}-%{uname}
 
 depmod -ae -F /boot/System.map-%{uname} %{uname}
 
@@ -565,24 +568,52 @@ if [ $1 == 1 ]; then
     # Add grub entry upon initial installation if the package is installed manually
     # During system installation, the bootloader isn't installed yet so grub is updated as a later task.
     if [ -f /boot/grub/grub.cfg -o -f /boot/efi/EFI/xenserver/grub.cfg ]; then
-        python /usr/lib/python2.7/site-packages/xcp/updategrub.py --add %{uname}
+        python /usr/lib/python2.7/site-packages/xcp/updategrub.py add kernel-alt %{uname}
     else
         echo "Skipping grub configuration during host installation."
     fi
+else
+    # Package update: we delay the update until posttrans to let the old package postun 
+    # store version information in a temporary file
+    > %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname}
 fi
 
 %posttrans
 depmod -ae -F /boot/System.map-%{uname} %{uname}
 
-if [ -e %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{uname} ]; then
-    rm %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{uname}
+if [ -e %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{name}-%{uname} ]; then
+    rm %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{name}-%{uname}
     dracut -f /boot/initrd-%{uname}.img %{uname}
 fi
+
+if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
+    # The package has been updated: consider updating grub
+    rm %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname}
+    # Get the version from the file the postun script from the uninstalled RPM wrote, if any
+    if [ -e %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version ]; then
+        OLDVERSION=$(cat %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version)
+        rm %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
+        if [ "$OLDVERSION" != %{uname} ]; then
+            python /usr/lib/python2.7/site-packages/xcp/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
+        fi
+    else
+        # No file? Then we are probably upgrading an old kernel-alt package
+        # It can be either 4.19.102-4 from 8.1 RC1, or an older one
+        # If it's 4.19.102-4 then there will be a grub entry to replace
+        # Else there won't be (except if manually added)
+        # The following will replace the entry if exists or just add the new one if not
+        python /usr/lib/python2.7/site-packages/xcp/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
+    fi
+fi
+
 
 %postun
 if [ $1 == 0 ]; then
     # remove grub entry upon uninstallation
-    python /usr/lib/python2.7/site-packages/xcp/updategrub.py --remove %{uname} || true
+    python /usr/lib/python2.7/site-packages/xcp/updategrub.py remove kernel-alt %{uname} --ignore-missing
+else
+    # write current version in a file for the upgraded RPM posttrans to handle grub config update
+    echo %{uname} > %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
 fi
 
 %files
@@ -619,7 +650,7 @@ fi
 %verify(not mtime) /usr/src/kernels/%{uname}-%{_arch}
 %{_rpmconfigdir}/macros.d/macros.kernel
 
-%files -n perf
+%files -n perf-alt
 %{_bindir}/perf
 %dir %{_libdir}/traceevent
 %{_libdir}/traceevent/plugins/
@@ -630,11 +661,20 @@ fi
 %doc tools/perf/Documentation/examples.txt
 %license COPYING
 
-%files -n python2-perf
+%files -n python2-perf-alt
 %license COPYING
 %{python2_sitearch}/*
 
 %changelog
+* Mon Mar 23 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.108-3
+- Rename perf to perf-alt and python2-perf to python2-perf-alt
+- Avoids overriding main kernel's perf and perf-alt in base repo
+
+* Fri Mar 20 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.108-2
+- Update scriptlet dependencies to latest xcp-python-libs for latest updategrub.py
+- Handle grub update in all scenarios: install, update (various cases), uninstall
+- Change path of temp regenerate-initrd... file to avoid clash with main kernel update
+
 * Thu Mar 12 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.108-1
 - Update patch level to 4.19.108
 - Removed following patches as they are now part of upstream
