@@ -1,4 +1,4 @@
-%define uname 4.19.108
+%define uname 4.19.128
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -22,8 +22,8 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: 4.19.108
-Release: 3%{?dist}
+Version: 4.19.128
+Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -319,6 +319,26 @@ Patch1092: patch-4.19.105-106
 Patch1093: patch-4.19.106-107
 Patch1094: patch-4.19.107-108-pre
 Patch1095: patch-4.19.107-108
+Patch1096: patch-4.19.108-109
+Patch1097: patch-4.19.109-110
+Patch1098: patch-4.19.110-111
+Patch1099: patch-4.19.111-112
+Patch1100: patch-4.19.112-113
+Patch1101: patch-4.19.113-114
+Patch1102: patch-4.19.114-115
+Patch1103: patch-4.19.115-116
+Patch1104: patch-4.19.116-117
+Patch1105: patch-4.19.117-118
+Patch1106: patch-4.19.118-119
+Patch1107: patch-4.19.119-120
+Patch1108: patch-4.19.120-121
+Patch1109: patch-4.19.121-122
+Patch1110: patch-4.19.122-123
+Patch1111: patch-4.19.123-124
+Patch1112: patch-4.19.124-125
+Patch1113: patch-4.19.125-126
+Patch1114: patch-4.19.126-127
+Patch1115: patch-4.19.127-128
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
@@ -666,6 +686,10 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Mon Jun 15 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.128-1
+- Update patch level to 4.19.128
+- Fix https://github.com/xcp-ng/xcp/issues/399
+
 * Mon Mar 23 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.108-3
 - Rename perf to perf-alt and python2-perf to python2-perf-alt
 - Avoids overriding main kernel's perf and perf-alt in base repo
