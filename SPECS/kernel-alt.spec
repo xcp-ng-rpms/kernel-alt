@@ -756,15 +756,7 @@ find %{buildroot} -name '.*.cmd' -type f -delete
 %post
 > %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{name}-%{uname}
 
-mkdir -p %{_rundir}/reboot-required.d/%{name}
-> %{_rundir}/reboot-required.d/%{name}/%{version}-%{release}
-
 depmod -ae -F /boot/System.map-%{uname} %{uname}
-
-if [ -e %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{name}-%{uname} ]; then
-    rm %{_localstatedir}/lib/rpm-state/regenerate-initrd-%{name}-%{uname}
-    dracut -f /boot/initrd-%{uname}.img %{uname}
-fi
 
 if [ $1 == 1 ]; then
     # Add grub entry upon initial installation if the package is installed manually
@@ -868,7 +860,7 @@ fi
 %{python2_sitearch}/*
 
 %changelog
-* Thu Aug 13 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.138-1
+* Sat Aug 15 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.138-1
 - Update patch level to 4.19.138
 
 * Tue Jun 30 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.19-7.0.7.1
