@@ -1,4 +1,4 @@
-%define uname 4.19.138
+%define uname 4.19.140
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -22,7 +22,7 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: 4.19.138
+Version: 4.19.140
 Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
@@ -513,6 +513,8 @@ Patch1122: patch-4.19.134-135
 Patch1123: patch-4.19.135-136
 Patch1124: patch-4.19.136-137
 Patch1125: patch-4.19.137-138
+Patch1126: patch-4.19.138-139
+Patch1127: patch-4.19.139-140
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v7.0.7#/kernel.patches.tar) = ac66560b53ff0ea51d76214f182f275c76a9b285
@@ -860,6 +862,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Wed Aug 19 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.140-1
+- Update patch level to 4.19.140
+- Enable Kernel modules to support Wireless, Dell RBU
+- Enable NTFS RW
+
 * Sat Aug 15 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.138-1
 - Update patch level to 4.19.138
 
