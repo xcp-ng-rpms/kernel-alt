@@ -40,6 +40,7 @@ BuildRequires: python
 BuildRequires: elfutils-devel, binutils-devel, xz-devel
 BuildRequires: python2-devel
 BuildRequires: asciidoc xmlto
+BuildRequires: openssl-devel
 AutoReqProv: no
 Provides: kernel-uname-r = %{uname}
 Provides: kernel = %{version}-%{release}
