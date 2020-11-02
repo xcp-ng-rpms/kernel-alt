@@ -1,4 +1,4 @@
-%define uname 4.19.140
+%define uname 4.19.142
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -22,7 +22,7 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: 4.19.140
+Version: 4.19.142
 Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
@@ -186,8 +186,9 @@ Patch123: 0002-xen-events-fix-binding-user-event-channels-to-cpus.patch
 Patch124: 0003-xen-let-alloc_xenballooned_pages-fail-if-not-enough-.patch
 Patch125: 0001-tcp-be-more-careful-in-tcp_fragment.patch
 #Patch126: 0001-random-always-use-batched-entropy-for-get_random_u-3.patch
-Patch127: 0001-block-cleanup-__blkdev_issue_discard.patch
-Patch128: 0001-block-fix-32-bit-overflow-in-__blkdev_issue_discard.patch
+Patch126: 0001-block-cleanup-__blkdev_issue_discard.patch
+Patch127: 0001-block-fix-32-bit-overflow-in-__blkdev_issue_discard.patch
+Patch128: 0001-xen-events-remove-event-handling-recursion-detection.patch
 Patch129: 0001-scsi-libiscsi-Fix-race-between-iscsi_xmit_task-and-i.patch
 Patch130: 0001-xen-netback-Reset-nr_frags-before-freeing-skb.patch
 Patch131: 0001-openvswitch-change-type-of-UPCALL_PID-attribute-to-N.patch
@@ -387,8 +388,21 @@ Patch324: gfs2-add-skippiness.patch
 Patch325: GFS2__Avoid_recently_demoted_rgrps
 Patch326: gfs2-debug-rgrp-sweep
 Patch327: gfs2-restore-kabi.patch
-Patch328: abi-version.patch
+Patch328: xsa331-linux.patch
+Patch329: xsa332-linux-01.patch
+Patch330: v11-0003-xen-events-fix-race-in-evtchn_fifo_unmask.patch
+Patch331: xsa332-linux-02.patch
+Patch332: xsa332-linux-03.patch
+Patch333: xsa332-linux-04.patch
+Patch334: xsa332-linux-05.patch
+Patch335: xsa332-linux-06.patch
+Patch336: xsa332-linux-07.patch
+Patch337: xsa332-linux-08.patch
+Patch338: xsa332-linux-09.patch
+Patch339: xsa332-linux-10.patch
+Patch340: xsa332-linux-11.patch
 
+Patch999: abi-version.patch
 Patch1000: abi-version-next.patch
 Patch1001: patch-4.19.19-20
 Patch1002: patch-4.19.20-21-mod
@@ -516,6 +530,9 @@ Patch1124: patch-4.19.136-137
 Patch1125: patch-4.19.137-138
 Patch1126: patch-4.19.138-139
 Patch1127: patch-4.19.139-140
+Patch1128: patch-4.19.140-141
+Patch1129: patch-4.19.141-142
+
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v7.0.7#/kernel.patches.tar) = ac66560b53ff0ea51d76214f182f275c76a9b285
@@ -863,6 +880,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Mon Nov 02 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-1
+- Add fix for XSA-331 from kernel package
+- Add fix for XSA-332 from kernel package
+- Update patch level to 4.19.142
+
 * Wed Aug 19 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.140-1
 - Update patch level to 4.19.140
 - Enable Kernel modules to support Wireless, Dell RBU
