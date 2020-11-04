@@ -1,4 +1,4 @@
-%define uname 4.19.128
+%define uname 4.19.142
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -22,7 +22,7 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: 4.19.128
+Version: 4.19.142
 Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
@@ -221,8 +221,22 @@ Patch162: gfs2-add-skippiness.patch
 Patch163: GFS2__Avoid_recently_demoted_rgrps
 Patch164: gfs2-debug-rgrp-sweep
 Patch165: gfs2-restore-kabi.patch
-Patch166: abi-version.patch
+Patch166: 0001-xen-events-remove-event-handling-recursion-detection.patch
+Patch167: xsa331-linux.patch
+Patch168: xsa332-linux-01.patch
+Patch169: v11-0003-xen-events-fix-race-in-evtchn_fifo_unmask.patch
+Patch170: xsa332-linux-02.patch
+Patch171: xsa332-linux-03.patch
+Patch172: xsa332-linux-04.patch
+Patch173: xsa332-linux-05.patch
+Patch174: xsa332-linux-06.patch
+Patch175: xsa332-linux-07.patch
+Patch176: xsa332-linux-08.patch
+Patch177: xsa332-linux-09.patch
+Patch178: xsa332-linux-10.patch
+Patch179: xsa332-linux-11.patch
 
+Patch999: abi-version.patch
 Patch1000: abi-version-next.patch
 Patch1001: patch-4.19.19-20
 Patch1002: patch-4.19.20-21
@@ -339,6 +353,21 @@ Patch1112: patch-4.19.124-125
 Patch1113: patch-4.19.125-126
 Patch1114: patch-4.19.126-127
 Patch1115: patch-4.19.127-128
+Patch1116: patch-4.19.128-129
+Patch1117: patch-4.19.129-130
+Patch1118: patch-4.19.130-131
+Patch1119: patch-4.19.131-132
+Patch1120: patch-4.19.132-133
+Patch1121: patch-4.19.133-134
+Patch1122: patch-4.19.134-135
+Patch1123: patch-4.19.135-136
+Patch1124: patch-4.19.136-137
+Patch1125: patch-4.19.137-138
+Patch1126: patch-4.19.138-139
+Patch1127: patch-4.19.139-140
+Patch1128: patch-4.19.140-141
+Patch1129: patch-4.19.141-142
+
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
@@ -686,6 +715,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Tue Nov 03 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-1
+- Add fix for XSA-331 from kernel package
+- Add fix for XSA-332 from kernel package
+- Update patch level to 4.19.142
+
 * Mon Jun 15 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.128-1
 - Update patch level to 4.19.128
 - Fix https://github.com/xcp-ng/xcp/issues/399
