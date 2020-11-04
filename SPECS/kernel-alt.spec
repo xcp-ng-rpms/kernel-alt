@@ -40,6 +40,7 @@ BuildRequires: python
 BuildRequires: elfutils-devel, binutils-devel, xz-devel
 BuildRequires: python2-devel
 BuildRequires: asciidoc xmlto
+BuildRequires: openssl-devel
 AutoReqProv: no
 Provides: kernel-uname-r = %{uname}
 Provides: kernel = %{version}-%{release}
@@ -715,10 +716,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
-* Tue Nov 03 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-1
+* Wed Nov 04 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-1
 - Add fix for XSA-331 from kernel package
 - Add fix for XSA-332 from kernel package
 - Update patch level to 4.19.142
+- Add build requires openssl-devel
 
 * Mon Jun 15 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.128-1
 - Update patch level to 4.19.128
