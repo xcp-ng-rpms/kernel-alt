@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.142
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -236,6 +236,13 @@ Patch176: xsa332-linux-08.patch
 Patch177: xsa332-linux-09.patch
 Patch178: xsa332-linux-10.patch
 Patch179: xsa332-linux-11.patch
+Patch180: 0001-Add-shadow-variables-support-from-kpatch.patch
+Patch181: 0002-xen-xenbus-Allow-watches-discard-events-before-queue.patch
+Patch182: 0003-xen-xenbus-Add-will_handle-callback-support-in-xenbu.patch
+Patch183: 0004-xen-xenbus-xen_bus_type-Support-will_handle-watch-ca.patch
+Patch184: 0005-xen-xenbus-Count-pending-messages-for-each-watch.patch
+Patch185: 0006-xenbus-xenbus_backend-Disallow-pending-watch-message.patch
+Patch186: xsa350-linux.patch
 
 Patch999: abi-version.patch
 Patch1000: abi-version-next.patch
@@ -716,6 +723,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Wed Dec 23 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-2
+- Fix https://github.com/xcp-ng/xcp/issues/468
+
 * Wed Nov 04 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-1
 - Add fix for XSA-331 from kernel package
 - Add fix for XSA-332 from kernel package
