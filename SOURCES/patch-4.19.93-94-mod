@@ -1046,19 +1046,6 @@ index 72c9b922a77b..761577d57ff3 100644
  		}
  	}
  
-diff --git a/drivers/block/xen-blkback/blkback.c b/drivers/block/xen-blkback/blkback.c
-index fd1e19f1a49f..3666afa639d1 100644
---- a/drivers/block/xen-blkback/blkback.c
-+++ b/drivers/block/xen-blkback/blkback.c
-@@ -936,6 +936,8 @@ next:
- out_of_memory:
- 	pr_alert("%s: out of memory\n", __func__);
- 	put_free_pages(ring, pages_to_gnt, segs_to_map);
-+	for (i = last_map; i < num; i++)
-+		pages[i]->handle = BLKBACK_INVALID_HANDLE;
- 	return -ENOMEM;
- }
- 
 diff --git a/drivers/block/xen-blkback/xenbus.c b/drivers/block/xen-blkback/xenbus.c
 index 55869b362fdf..25c41ce070a7 100644
 --- a/drivers/block/xen-blkback/xenbus.c
