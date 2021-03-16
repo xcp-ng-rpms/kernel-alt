@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: 4.19.142
-Release: 2%{?dist}
+Release: 3%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -243,6 +243,15 @@ Patch183: 0004-xen-xenbus-xen_bus_type-Support-will_handle-watch-ca.patch
 Patch184: 0005-xen-xenbus-Count-pending-messages-for-each-watch.patch
 Patch185: 0006-xenbus-xenbus_backend-Disallow-pending-watch-message.patch
 Patch186: xsa350-linux.patch
+Patch187: xsa361-linux-1.patch
+Patch188: xsa361-linux-2.patch
+Patch189: xsa361-linux-3.patch
+Patch190: xsa361-linux-4.patch
+Patch191: xsa362-linux-1.patch
+Patch192: xsa362-linux-2.patch
+Patch193: xsa362-linux-3.patch
+Patch194: 0001-xen-netback-avoid-race-in-xenvif_rx_ring_slots_avail.patch
+Patch195: xsa365-linux.patch
 
 Patch999: abi-version.patch
 Patch1000: abi-version-next.patch
@@ -324,7 +333,7 @@ Patch1075: patch-4.19.89-90
 Patch1076: patch-4.19.90-91
 Patch1077: patch-4.19.91-92
 Patch1078: patch-4.19.92-93
-Patch1079: patch-4.19.93-94
+Patch1079: patch-4.19.93-94-mod
 Patch1080: patch-4.19.94-95
 Patch1081: patch-4.19.95-96
 Patch1082: patch-4.19.96-97
@@ -378,7 +387,7 @@ Patch1129: patch-4.19.141-142
 
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
-Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
+Provides: gitsha(ssh://git@code.citrite.net/xs/linux.pg.git) = b2399b119d7671e1bf78c9e5fbf427612b8e3fcc
 
 %if %{do_kabichk}
 %endif
@@ -392,7 +401,7 @@ and output, etc.
 
 %package headers
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
-Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
+Provides: gitsha(ssh://git@code.citrite.net/xs/linux.pg.git) = b2399b119d7671e1bf78c9e5fbf427612b8e3fcc
 License: GPLv2
 Summary: Header files for the Linux kernel for use by glibc
 Group: Development/System
@@ -410,7 +419,7 @@ glibc package.
 
 %package devel
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
-Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
+Provides: gitsha(ssh://git@code.citrite.net/xs/linux.pg.git) = b2399b119d7671e1bf78c9e5fbf427612b8e3fcc
 License: GPLv2
 Summary: Development package for building kernel modules to match the %{uname} kernel
 Group: System Environment/Kernel
@@ -425,7 +434,7 @@ against the %{uname} kernel.
 
 %package -n perf-alt
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
-Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
+Provides: gitsha(ssh://git@code.citrite.net/xs/linux.pg.git) = b2399b119d7671e1bf78c9e5fbf427612b8e3fcc
 Summary: Performance monitoring for the Linux kernel
 License: GPLv2
 Conflicts: perf
@@ -440,7 +449,7 @@ to manipulate perf events.
 
 %package -n python2-perf-alt
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/linux.pg/archive?format=tar&at=v6.0.9#/kernel.patches.tar) = 0ca2a289c5acc3e82b1948d53a0fab4e9fe8d9cf
-Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XSU/repos/linux-stable/archive?at=refs%2Ftags%2Fv4.19.19&format=tar.gz&prefix=kernel-4.19.19#/kernel-4.19.19.tar.gz) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
+Provides: gitsha(ssh://git@code.citrite.net/xs/linux.pg.git) = b2399b119d7671e1bf78c9e5fbf427612b8e3fcc
 Summary: %{pythonperfsum}
 Provides: python2-perf-alt
 Conflicts: python2-perf
@@ -723,6 +732,13 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Wed Mar 03 2021 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-3
+- Security update
+- Fix XSAs 361 362 365
+- Fix use-after-free in xen-netback caused by XSA-332
+- See https://xenbits.xen.org/xsa/
+- Updated to patch-4.19.93-94-mod to resolve XSA 365 conflict
+
 * Wed Dec 23 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-2
 - Fix https://github.com/xcp-ng/xcp/issues/468
 
