@@ -1,4 +1,4 @@
-%define uname 4.19.154
+%define uname 4.19.218
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -22,7 +22,7 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: 4.19.154
+Version: 4.19.218
 Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
@@ -182,13 +182,13 @@ Patch119: 0002-tcp-tcp_fragment-should-apply-sane-memory-limits.patch
 Patch120: 0003-tcp-add-tcp_min_snd_mss-sysctl.patch
 Patch121: 0004-tcp-enforce-tcp_min_snd_mss-in-tcp_mtu_probing.patch
 Patch122: 0001-tcp-refine-memory-limit-test-in-tcp_fragment.patch
-Patch123: 0002-xen-events-fix-binding-user-event-channels-to-cpus.patch
-Patch124: 0003-xen-let-alloc_xenballooned_pages-fail-if-not-enough-.patch
+#Patch123: 0002-xen-events-fix-binding-user-event-channels-to-cpus.patch
+#Patch124: 0003-xen-let-alloc_xenballooned_pages-fail-if-not-enough-.patch
 Patch125: 0001-tcp-be-more-careful-in-tcp_fragment.patch
 #Patch126: 0001-random-always-use-batched-entropy-for-get_random_u-3.patch
 Patch126: 0001-block-cleanup-__blkdev_issue_discard.patch
 Patch127: 0001-block-fix-32-bit-overflow-in-__blkdev_issue_discard.patch
-Patch128: 0001-xen-events-remove-event-handling-recursion-detection.patch
+#Patch128: 0001-xen-events-remove-event-handling-recursion-detection.patch
 Patch129: 0001-scsi-libiscsi-Fix-race-between-iscsi_xmit_task-and-i.patch
 Patch130: 0001-xen-netback-Reset-nr_frags-before-freeing-skb.patch
 Patch131: 0001-openvswitch-change-type-of-UPCALL_PID-attribute-to-N.patch
@@ -388,19 +388,19 @@ Patch324: gfs2-add-skippiness.patch
 Patch325: GFS2__Avoid_recently_demoted_rgrps
 Patch326: gfs2-debug-rgrp-sweep
 Patch327: gfs2-restore-kabi.patch
-Patch328: xsa331-linux.patch
-Patch329: xsa332-linux-01.patch
-Patch330: v11-0003-xen-events-fix-race-in-evtchn_fifo_unmask.patch
-Patch331: xsa332-linux-02.patch
-Patch332: xsa332-linux-03.patch
-Patch333: xsa332-linux-04.patch
-Patch334: xsa332-linux-05.patch
-Patch335: xsa332-linux-06.patch
-Patch336: xsa332-linux-07.patch
-Patch337: xsa332-linux-08.patch
-Patch338: xsa332-linux-09.patch
-Patch339: xsa332-linux-10.patch
-Patch340: xsa332-linux-11.patch
+#Patch328: xsa331-linux.patch
+#Patch329: xsa332-linux-01.patch
+#Patch330: v11-0003-xen-events-fix-race-in-evtchn_fifo_unmask.patch
+#Patch331: xsa332-linux-02.patch
+#Patch332: xsa332-linux-03.patch
+#Patch333: xsa332-linux-04.patch
+#Patch334: xsa332-linux-05.patch
+#Patch335: xsa332-linux-06.patch
+#Patch336: xsa332-linux-07.patch
+#Patch337: xsa332-linux-08.patch
+#Patch338: xsa332-linux-09.patch
+#Patch339: xsa332-linux-10.patch
+#Patch340: xsa332-linux-11.patch
 Patch341: 0001-Add-shadow-variables-support-from-kpatch.patch
 Patch342: 0002-xen-xenbus-Allow-watches-discard-events-before-queue.patch
 Patch343: 0003-xen-xenbus-Add-will_handle-callback-support-in-xenbu.patch
@@ -408,21 +408,21 @@ Patch344: 0004-xen-xenbus-xen_bus_type-Support-will_handle-watch-ca.patch
 Patch345: 0005-xen-xenbus-Count-pending-messages-for-each-watch.patch
 Patch346: 0006-xenbus-xenbus_backend-Disallow-pending-watch-message.patch
 Patch347: xsa350-linux.patch
-Patch348: xsa361-linux-1.patch
-Patch349: xsa361-linux-2.patch
-Patch350: xsa361-linux-3.patch
-Patch351: xsa361-linux-4.patch
-Patch352: xsa362-linux-1.patch
-Patch353: xsa362-linux-2.patch
-Patch354: xsa362-linux-3.patch
-Patch355: 0001-xen-netback-avoid-race-in-xenvif_rx_ring_slots_avail.patch
-Patch356: xsa365-linux.patch
-Patch357: xsa371-linux.patch
-Patch358: xsa367-linux.patch
-Patch359: 0001-xen-netback-fix-spurious-event-detection-for-common-.patch
-Patch360: 0007-xen-evtchn-use-smp-barriers-for-user-event-ring.patch
-Patch361: 0008-xen-evtchn-use-READ-WRITE_ONCE-for-accessing-ring-in.patch
-Patch362: xen-events-reset-affinity-of-2-level-event-when-tearing-it-down.patch
+#Patch348: xsa361-linux-1.patch
+#Patch349: xsa361-linux-2.patch
+#Patch350: xsa361-linux-3.patch
+#Patch351: xsa361-linux-4.patch
+#Patch352: xsa362-linux-1.patch
+#Patch353: xsa362-linux-2.patch
+#Patch354: xsa362-linux-3.patch
+#Patch355: 0001-xen-netback-avoid-race-in-xenvif_rx_ring_slots_avail.patch
+#Patch356: xsa365-linux.patch
+#Patch357: xsa371-linux.patch
+#Patch358: xsa367-linux.patch
+#Patch359: 0001-xen-netback-fix-spurious-event-detection-for-common-.patch
+#Patch360: 0007-xen-evtchn-use-smp-barriers-for-user-event-ring.patch
+#Patch361: 0008-xen-evtchn-use-READ-WRITE_ONCE-for-accessing-ring-in.patch
+#Patch362: xen-events-reset-affinity-of-2-level-event-when-tearing-it-down.patch
 
 Patch999: abi-version.patch
 Patch1000: abi-version-next.patch
@@ -503,7 +503,7 @@ Patch1075: patch-4.19.89-90-mod
 Patch1076: patch-4.19.90-91
 Patch1077: patch-4.19.91-92
 Patch1078: patch-4.19.92-93
-Patch1079: patch-4.19.93-94-mod
+Patch1079: patch-4.19.93-94
 Patch1080: patch-4.19.94-95
 Patch1081: patch-4.19.95-96
 Patch1082: patch-4.19.96-97
@@ -512,6 +512,7 @@ Patch1084: patch-4.19.98-99
 Patch1085: patch-4.19.99-100
 Patch1086: patch-4.19.100-101-mod
 Patch1087: patch-4.19.101-102
+#Patch1088: patch-4.19.102-103
 Patch1088: patch-4.19.102-103-pre
 Patch1089: patch-4.19.102-103-mod
 Patch1090: patch-4.19.103-104
@@ -554,7 +555,7 @@ Patch1126: patch-4.19.138-139
 Patch1127: patch-4.19.139-140
 Patch1128: patch-4.19.140-141
 Patch1129: patch-4.19.141-142
-Patch1130: patch-4.19.142-143-mod
+Patch1130: patch-4.19.142-143
 Patch1131: patch-4.19.143-144
 Patch1132: patch-4.19.144-145
 Patch1133: patch-4.19.145-146
@@ -566,8 +567,73 @@ Patch1138: patch-4.19.150-151
 Patch1139: patch-4.19.151-152
 Patch1140: patch-4.19.152-153
 Patch1141: patch-4.19.153-154
-Patch1142: xen-events-don-t-unmask-an-event-channel-when-an-eoi-is-pending.patch-mod
-Patch1143: xen-events-avoid-handling-the-same-event-on-two-cpus-at-the-same-time.patch
+#Patch1142: xen-events-don-t-unmask-an-event-channel-when-an-eoi-is-pending.patch-mod
+#Patch1143: xen-events-avoid-handling-the-same-event-on-two-cpus-at-the-same-time.patch
+Patch1143: patch-4.19.154-155
+Patch1144: patch-4.19.155-156
+Patch1145: patch-4.19.156-157
+Patch1146: patch-4.19.157-158
+Patch1147: patch-4.19.158-159
+Patch1148: patch-4.19.159-160
+Patch1149: patch-4.19.160-161
+Patch1150: patch-4.19.161-162
+Patch1151: patch-4.19.162-163
+Patch1152: patch-4.19.163-164-mod
+Patch1153: patch-4.19.164-165
+Patch1154: patch-4.19.165-166
+Patch1155: patch-4.19.166-167
+Patch1156: patch-4.19.167-168
+Patch1157: patch-4.19.168-169
+Patch1158: patch-4.19.169-170
+Patch1159: patch-4.19.170-171
+Patch1160: patch-4.19.171-172
+Patch1161: patch-4.19.172-173
+Patch1162: patch-4.19.173-174
+Patch1163: patch-4.19.174-175
+Patch1164: patch-4.19.175-176
+Patch1165: patch-4.19.176-177
+Patch1166: patch-4.19.177-178
+Patch1167: patch-4.19.178-179
+Patch1168: patch-4.19.179-180
+Patch1169: patch-4.19.180-181
+Patch1170: patch-4.19.181-182
+Patch1171: patch-4.19.182-183
+Patch1172: patch-4.19.183-184
+Patch1173: patch-4.19.184-185
+Patch1174: patch-4.19.185-186
+Patch1175: patch-4.19.186-187
+Patch1176: patch-4.19.187-188
+Patch1177: patch-4.19.188-189
+Patch1178: patch-4.19.189-190
+Patch1179: patch-4.19.190-191
+Patch1180: patch-4.19.191-192
+Patch1181: patch-4.19.192-193
+Patch1182: patch-4.19.193-194
+Patch1183: patch-4.19.194-195
+Patch1184: patch-4.19.195-196
+Patch1185: patch-4.19.196-197
+Patch1186: patch-4.19.197-198
+Patch1187: patch-4.19.198-199
+Patch1188: patch-4.19.199-200
+Patch1189: patch-4.19.200-201
+Patch1190: patch-4.19.201-202
+Patch1191: patch-4.19.202-203
+Patch1192: patch-4.19.203-204
+Patch1193: patch-4.19.204-205
+Patch1194: patch-4.19.205-206
+Patch1195: patch-4.19.206-207
+Patch1196: patch-4.19.207-208
+Patch1197: patch-4.19.208-209
+Patch1198: patch-4.19.209-210
+Patch1199: patch-4.19.210-211
+Patch1200: patch-4.19.211-212
+Patch1201: patch-4.19.212-213
+Patch1202: patch-4.19.213-214
+Patch1203: patch-4.19.214-215
+Patch1204: patch-4.19.215-216
+Patch1205: patch-4.19.216-217
+Patch1206: patch-4.19.217-218
+
 
 Provides: gitsha(ssh://git@code.citrite.net/XSU/linux-stable.git) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(ssh://git@code.citrite.net/XS/linux.pg.git) = cb3c28f7e8213ef44e5c06369b577a18b86af291
@@ -915,11 +981,16 @@ fi
 %{python2_sitearch}/*
 
 %changelog
-* Thu Apr 01 2021 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.154-1
+* Tue Nov 30 2021 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.218-1
+- Update patch level to 4.19.218
+
+* Thu Apr 01 2021 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.154-2
 - Security (XSAs 367 and 371) and bugfix update
 - XSA-367: Linux: netback fails to honor grant mapping errors
 - XSA-371: Linux: blkback driver may leak persistent grants
 - Patches backported from linus kernel to fix event-related issues caused by XSA-332
+
+* Tue Mar 30 2021 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.154-1
 - Update patch level to 4.19.154
 
 * Tue Mar 02 2021 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.142-3
