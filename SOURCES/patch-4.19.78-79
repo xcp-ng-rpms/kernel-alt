@@ -2869,6 +2869,19 @@ index fd2dbd7eed7b..52d4fa4161dc 100644
  			pci_iounmap(vmd->dev, membar2);
  		}
  	}
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index c65465385d8c..6384930a6749 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1366,7 +1366,7 @@ static void pci_restore_rebar_state(struct pci_dev *pdev)
+ 		pci_read_config_dword(pdev, pos + PCI_REBAR_CTRL, &ctrl);
+ 		bar_idx = ctrl & PCI_REBAR_CTRL_BAR_IDX;
+ 		res = pdev->resource + bar_idx;
+-		size = order_base_2((resource_size(res) >> 20) | 1) - 1;
++		size = ilog2(resource_size(res)) - 20;
+ 		ctrl &= ~PCI_REBAR_CTRL_BAR_SIZE;
+ 		ctrl |= size << PCI_REBAR_CTRL_BAR_SHIFT;
+ 		pci_write_config_dword(pdev, pos + PCI_REBAR_CTRL, ctrl);
 diff --git a/drivers/power/supply/sbs-battery.c b/drivers/power/supply/sbs-battery.c
 index 8ba6abf584de..3958ee03eec1 100644
 --- a/drivers/power/supply/sbs-battery.c
@@ -3158,6 +3171,57 @@ index 7e7bdcbbc741..9f3123b04536 100644
  	__imx2_wdt_set_timeout(wdog, actual);
  	wdog->timeout = new_timeout;
  	return 0;
+diff --git a/drivers/xen/pci.c b/drivers/xen/pci.c
+index 7494dbeb4409..db58aaa4dc59 100644
+--- a/drivers/xen/pci.c
++++ b/drivers/xen/pci.c
+@@ -29,6 +29,8 @@
+ #include "../pci/pci.h"
+ #ifdef CONFIG_PCI_MMCONFIG
+ #include <asm/pci_x86.h>
++
++static int xen_mcfg_late(void);
+ #endif
+ 
+ static bool __read_mostly pci_seg_supported = true;
+@@ -40,7 +42,18 @@ static int xen_add_device(struct device *dev)
+ #ifdef CONFIG_PCI_IOV
+ 	struct pci_dev *physfn = pci_dev->physfn;
+ #endif
+-
++#ifdef CONFIG_PCI_MMCONFIG
++	static bool pci_mcfg_reserved = false;
++	/*
++	 * Reserve MCFG areas in Xen on first invocation due to this being
++	 * potentially called from inside of acpi_init immediately after
++	 * MCFG table has been finally parsed.
++	 */
++	if (!pci_mcfg_reserved) {
++		xen_mcfg_late();
++		pci_mcfg_reserved = true;
++	}
++#endif
+ 	if (pci_seg_supported) {
+ 		struct {
+ 			struct physdev_pci_device_add add;
+@@ -213,7 +226,7 @@ static int __init register_xen_pci_notifier(void)
+ arch_initcall(register_xen_pci_notifier);
+ 
+ #ifdef CONFIG_PCI_MMCONFIG
+-static int __init xen_mcfg_late(void)
++static int xen_mcfg_late(void)
+ {
+ 	struct pci_mmcfg_region *cfg;
+ 	int rc;
+@@ -252,8 +265,4 @@ static int __init xen_mcfg_late(void)
+ 	}
+ 	return 0;
+ }
+-/*
+- * Needs to be done after acpi_init which are subsys_initcall.
+- */
+-subsys_initcall_sync(xen_mcfg_late);
+ #endif
 diff --git a/drivers/xen/xenbus/xenbus_dev_frontend.c b/drivers/xen/xenbus/xenbus_dev_frontend.c
 index 39c63152a358..454c6826abdb 100644
 --- a/drivers/xen/xenbus/xenbus_dev_frontend.c

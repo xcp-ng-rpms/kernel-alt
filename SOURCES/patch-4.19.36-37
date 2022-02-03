@@ -2045,6 +2045,18 @@ index 710e9641552e..85e320178a0e 100644
  	}
  
  	/*
+diff --git a/drivers/scsi/libfc/fc_rport.c b/drivers/scsi/libfc/fc_rport.c
+index 1797e47fab38..3d51a936f6d5 100644
+--- a/drivers/scsi/libfc/fc_rport.c
++++ b/drivers/scsi/libfc/fc_rport.c
+@@ -2153,7 +2153,6 @@ static void fc_rport_recv_logo_req(struct fc_lport *lport, struct fc_frame *fp)
+ 		FC_RPORT_DBG(rdata, "Received LOGO request while in state %s\n",
+ 			     fc_rport_state(rdata));
+ 
+-		rdata->flags &= ~FC_RP_STARTED;
+ 		fc_rport_enter_delete(rdata, RPORT_EV_STOP);
+ 		mutex_unlock(&rdata->rp_mutex);
+ 		kref_put(&rdata->kref, fc_rport_destroy);
 diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
 index 655790f30434..1fc832751a4f 100644
 --- a/drivers/scsi/scsi_lib.c
@@ -2959,6 +2971,22 @@ diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
 index 72074276c088..fed0ff446abb 100644
 --- a/net/bridge/br_input.c
 +++ b/net/bridge/br_input.c
+@@ -195,13 +195,10 @@ static void __br_handle_local_finish(struct sk_buff *skb)
+ /* note: already called with rcu_read_lock */
+ static int br_handle_local_finish(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	struct net_bridge_port *p = br_port_get_rcu(skb->dev);
+-
+ 	__br_handle_local_finish(skb);
+ 
+-	BR_INPUT_SKB_CB(skb)->brdev = p->br->dev;
+-	br_pass_frame_up(skb);
+-	return 0;
++	/* return 1 to signal the okfn() was called so it's ok to use the skb */
++	return 1;
+ }
+ 
+ /*
 @@ -278,10 +275,18 @@ rx_handler_result_t br_handle_frame(struct sk_buff **pskb)
  				goto forward;
  		}

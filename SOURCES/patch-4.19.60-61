@@ -10503,6 +10503,47 @@ index 39155d7cc894..ae704658b528 100644
  module_param(experimental_zcopytx, int, 0444);
  MODULE_PARM_DESC(experimental_zcopytx, "Enable Zero Copy TX;"
  		                       " 1 -Enable; 0 - Disable");
+diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
+index 7ab6caef599c..d4e8b717ce2b 100644
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -527,8 +527,15 @@ static void balloon_process(struct work_struct *work)
+ 				state = reserve_additional_memory();
+ 		}
+ 
+-		if (credit < 0)
+-			state = decrease_reservation(-credit, GFP_BALLOON);
++		if (credit < 0) {
++			long n_pages;
++
++			n_pages = min(-credit, si_mem_available());
++			state = decrease_reservation(n_pages, GFP_BALLOON);
++			if (state == BP_DONE && n_pages != -credit &&
++			    n_pages < totalreserve_pages)
++				state = BP_EAGAIN;
++		}
+ 
+ 		state = update_schedule(state);
+ 
+@@ -567,6 +574,9 @@ static int add_ballooned_pages(int nr_pages)
+ 		}
+ 	}
+ 
++	if (si_mem_available() < nr_pages)
++		return -ENOMEM;
++
+ 	st = decrease_reservation(nr_pages, GFP_USER);
+ 	if (st != BP_DONE)
+ 		return -ENOMEM;
+@@ -696,7 +706,7 @@ static int __init balloon_init(void)
+ 	balloon_stats.schedule_delay = 1;
+ 	balloon_stats.max_schedule_delay = 32;
+ 	balloon_stats.retry_count = 1;
+-	balloon_stats.max_retry_count = RETRY_UNLIMITED;
++	balloon_stats.max_retry_count = 4;
+ 
+ #ifdef CONFIG_XEN_BALLOON_MEMORY_HOTPLUG
+ 	set_online_page_callback(&xen_online_page);
 diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
 index fe1f16351f94..8d49b91d92cd 100644
 --- a/drivers/xen/events/events_base.c
@@ -10524,6 +10565,35 @@ index fe1f16351f94..8d49b91d92cd 100644
  
  static int set_affinity_irq(struct irq_data *data, const struct cpumask *dest,
  			    bool force)
+@@ -1341,6 +1340,15 @@ static int set_affinity_irq(struct irq_data *data, const struct cpumask *dest,
+ 	return ret;
+ }
+ 
++/* To be called with desc->lock held. */
++int xen_set_affinity_evtchn(struct irq_desc *desc, unsigned int tcpu)
++{
++	struct irq_data *d = irq_desc_get_irq_data(desc);
++
++	return set_affinity_irq(d, cpumask_of(tcpu), false);
++}
++EXPORT_SYMBOL_GPL(xen_set_affinity_evtchn);
++
+ static void enable_dynirq(struct irq_data *data)
+ {
+ 	int evtchn = evtchn_from_irq(data->irq);
+diff --git a/drivers/xen/evtchn.c b/drivers/xen/evtchn.c
+index 6d1a5e58968f..47c70b826a6a 100644
+--- a/drivers/xen/evtchn.c
++++ b/drivers/xen/evtchn.c
+@@ -447,7 +447,7 @@ static void evtchn_bind_interdom_next_vcpu(int evtchn)
+ 	this_cpu_write(bind_last_selected_cpu, selected_cpu);
+ 
+ 	/* unmask expects irqs to be disabled */
+-	xen_rebind_evtchn_to_cpu(evtchn, selected_cpu);
++	xen_set_affinity_evtchn(desc, selected_cpu);
+ 	raw_spin_unlock_irqrestore(&desc->lock, flags);
+ }
+ 
 diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
 index e24c0a69ff5d..c84186563c31 100644
 --- a/fs/btrfs/file.c

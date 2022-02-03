@@ -337,6 +337,21 @@ index 51ed99a37803..6053f5a93f58 100644
  				break;
  			}
  		}
+diff --git a/drivers/gpu/drm/i915/gvt/vgpu.c b/drivers/gpu/drm/i915/gvt/vgpu.c
+index c628be05fbfe..69bba88906cd 100644
+--- a/drivers/gpu/drm/i915/gvt/vgpu.c
++++ b/drivers/gpu/drm/i915/gvt/vgpu.c
+@@ -556,9 +556,9 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
+ 
+ 		intel_vgpu_reset_mmio(vgpu, dmlr);
+ 		populate_pvinfo_page(vgpu);
+-		intel_vgpu_reset_display(vgpu);
+ 
+ 		if (dmlr) {
++			intel_vgpu_reset_display(vgpu);
+ 			intel_vgpu_reset_cfg_space(vgpu);
+ 			/* only reset the failsafe mode when dmlr reset */
+ 			vgpu->failsafe = false;
 diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
 index dbfd2c006f74..6f81de85fb86 100644
 --- a/drivers/gpu/drm/msm/msm_drv.c

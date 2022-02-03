@@ -985,6 +985,20 @@ index d33f92b9fa22..052a7a4ac025 100644
  #define __HAVE_ARCH_MEMSET
  void *memset(void *s, int c, size_t n);
  void *__memset(void *s, int c, size_t n);
+diff --git a/arch/x86/include/asm/xen/hypercall.h b/arch/x86/include/asm/xen/hypercall.h
+index ef05bea7010d..6b5c710846f5 100644
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -206,6 +206,9 @@ xen_single_call(unsigned int call,
+ 	__HYPERCALL_DECLS;
+ 	__HYPERCALL_5ARG(a1, a2, a3, a4, a5);
+ 
++	if (call >= PAGE_SIZE / sizeof(hypercall_page[0]))
++		return -EINVAL;
++
+ 	asm volatile(CALL_NOSPEC
+ 		     : __HYPERCALL_5PARAM
+ 		     : [thunk_target] "a" (&hypercall_page[call])
 diff --git a/arch/x86/kvm/svm.c b/arch/x86/kvm/svm.c
 index b47541962012..6dc72804fe6e 100644
 --- a/arch/x86/kvm/svm.c

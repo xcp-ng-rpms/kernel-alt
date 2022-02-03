@@ -3059,6 +3059,48 @@ index 350257c13a5b..bc9f2a2365f4 100644
  	if (!cmgr->io_bdt_pool) {
  		printk(KERN_ERR PFX "failed to alloc io_bdt_pool\n");
  		goto mem_err;
+diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
+index be83590ed955..ff943f477d6f 100644
+--- a/drivers/scsi/libfc/fc_lport.c
++++ b/drivers/scsi/libfc/fc_lport.c
+@@ -1726,14 +1726,14 @@ void fc_lport_flogi_resp(struct fc_seq *sp, struct fc_frame *fp,
+ 	    fc_frame_payload_op(fp) != ELS_LS_ACC) {
+ 		FC_LPORT_DBG(lport, "FLOGI not accepted or bad response\n");
+ 		fc_lport_error(lport, fp);
+-		goto err;
++		goto out;
+ 	}
+ 
+ 	flp = fc_frame_payload_get(fp, sizeof(*flp));
+ 	if (!flp) {
+ 		FC_LPORT_DBG(lport, "FLOGI bad response\n");
+ 		fc_lport_error(lport, fp);
+-		goto err;
++		goto out;
+ 	}
+ 
+ 	mfs = ntohs(flp->fl_csp.sp_bb_data) &
+@@ -1743,7 +1743,7 @@ void fc_lport_flogi_resp(struct fc_seq *sp, struct fc_frame *fp,
+ 		FC_LPORT_DBG(lport, "FLOGI bad mfs:%hu response, "
+ 			     "lport->mfs:%hu\n", mfs, lport->mfs);
+ 		fc_lport_error(lport, fp);
+-		goto err;
++		goto out;
+ 	}
+ 
+ 	if (mfs <= lport->mfs) {
+diff --git a/drivers/scsi/libfc/fc_rport.c b/drivers/scsi/libfc/fc_rport.c
+index 372387a450df..1797e47fab38 100644
+--- a/drivers/scsi/libfc/fc_rport.c
++++ b/drivers/scsi/libfc/fc_rport.c
+@@ -184,7 +184,6 @@ void fc_rport_destroy(struct kref *kref)
+ 	struct fc_rport_priv *rdata;
+ 
+ 	rdata = container_of(kref, struct fc_rport_priv, kref);
+-	WARN_ON(!list_empty(&rdata->peers));
+ 	kfree_rcu(rdata, rcu);
+ }
+ EXPORT_SYMBOL(fc_rport_destroy);
 diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
 index 60bcc6df97a9..65305b3848bc 100644
 --- a/drivers/scsi/scsi_debug.c
@@ -4049,6 +4091,19 @@ index 82377017130f..d31b6c72b476 100644
  		invalidate_mapping_pages(inode->i_mapping, 0, -1);
  		iput(toput_inode);
  		toput_inode = inode;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 4614ee25f621..9d566e62684c 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -107,7 +107,7 @@ static int glock_wake_function(wait_queue_entry_t *wait, unsigned int mode,
+ 
+ static wait_queue_head_t *glock_waitqueue(struct lm_lockname *name)
+ {
+-	u32 hash = jhash2((u32 *)name, sizeof(*name) / 4, 0);
++	u32 hash = jhash2((u32 *)name, ht_parms.key_len / 4, 0);
+ 
+ 	return glock_wait_table + hash_32(hash, GLOCK_WAIT_TABLE_BITS);
+ }
 diff --git a/fs/iomap.c b/fs/iomap.c
 index e57fb1e534c5..fac45206418a 100644
 --- a/fs/iomap.c
