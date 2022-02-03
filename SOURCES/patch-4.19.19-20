@@ -1936,6 +1936,21 @@ index 2e7e8d85e9b4..cb515f183482 100644
  		shrink_dentry_list(&dispose);
  	} while (list_lru_count(&sb->s_dentry_lru) > 0);
  }
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index e978f6930575..449d0cb45a84 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -1747,9 +1747,9 @@ static int gfs2_rbm_find(struct gfs2_rbm *rbm, u8 state, u32 *minext,
+ 			goto next_iter;
+ 		}
+ 		if (ret == -E2BIG) {
+-			n += rbm->bii - initial_bii;
+ 			rbm->bii = 0;
+ 			rbm->offset = 0;
++			n += (rbm->bii - initial_bii);
+ 			goto res_covered_end_of_rgrp;
+ 		}
+ 		return ret;
 diff --git a/fs/nfs/write.c b/fs/nfs/write.c
 index 586726a590d8..d790faff8e47 100644
 --- a/fs/nfs/write.c
@@ -2283,6 +2298,26 @@ index b798862b6be5..f21ea6125fc2 100644
  	return hdr_len;
  }
  EXPORT_SYMBOL(gre_parse_header);
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index f8bbd693c19c..d95b32af4a0e 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -425,6 +425,7 @@ static int ip_frag_queue(struct ipq *qp, struct sk_buff *skb)
+ 	 * fragment.
+ 	 */
+ 
++	err = -EINVAL;
+ 	/* Find out where to put this fragment.  */
+ 	prev_tail = qp->q.fragments_tail;
+ 	if (!prev_tail)
+@@ -501,7 +502,6 @@ static int ip_frag_queue(struct ipq *qp, struct sk_buff *skb)
+ 
+ discard_qp:
+ 	inet_frag_kill(&qp->q);
+-	err = -EINVAL;
+ 	__IP_INC_STATS(net, IPSTATS_MIB_REASM_OVERLAPS);
+ err:
+ 	kfree_skb(skb);
 diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
 index 0bfad3e72509..f199945f6e4a 100644
 --- a/net/ipv4/ip_gre.c

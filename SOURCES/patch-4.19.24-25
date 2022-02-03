@@ -11,6 +11,22 @@ index 370ad0d34076..2caa131ff306 100644
  EXTRAVERSION =
  NAME = "People's Front"
  
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 17eb09d222ff..ec78a04eb136 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -122,8 +122,10 @@ static void alg_do_release(const struct af_alg_type *type, void *private)
+ 
+ int af_alg_release(struct socket *sock)
+ {
+-	if (sock->sk)
++	if (sock->sk) {
+ 		sock_put(sock->sk);
++		sock->sk = NULL;
++	}
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(af_alg_release);
 diff --git a/drivers/hwmon/lm80.c b/drivers/hwmon/lm80.c
 index 0e30fa00204c..f9b8e3e23a8e 100644
 --- a/drivers/hwmon/lm80.c
