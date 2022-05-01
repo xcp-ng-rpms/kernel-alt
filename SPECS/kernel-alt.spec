@@ -695,6 +695,7 @@ Patch1205: patch-4.19.223-224
 Patch1206: patch-4.19.224-225
 Patch1207: patch-4.19.225-226
 Patch1208: patch-4.19.226-227
+Patch1209: xen_dom0_64bit-efi.patch
 
 Provides: gitsha(ssh://git@code.citrite.net/XSU/linux-stable.git) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(ssh://git@code.citrite.net/XS/linux.pg.git) = cb3c28f7e8213ef44e5c06369b577a18b86af291
