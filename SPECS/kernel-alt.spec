@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -695,7 +695,8 @@ Patch1205: patch-4.19.223-224
 Patch1206: patch-4.19.224-225
 Patch1207: patch-4.19.225-226
 Patch1208: patch-4.19.226-227
-Patch1209: xen_dom0_64bit-efi.patch
+Patch1209: xen-x86-obtain-upper-32-bits-of-video-frame-buffer-address-for-dom0.backport.patch
+Patch1210: xen-x86-obtain-full-video-frame-buffer-address-for-Dom0-also-under-EFI.backport.patch
 
 Provides: gitsha(ssh://git@code.citrite.net/XSU/linux-stable.git) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(ssh://git@code.citrite.net/XS/linux.pg.git) = cb3c28f7e8213ef44e5c06369b577a18b86af291
@@ -1043,8 +1044,8 @@ fi
 %{python2_sitearch}/*
 
 %changelog
-* Fri May 13 2022 Andrew Lindh <andrew@netplex.net>
-- Fix UEFI Dom0 boot EFIFB with 64 bit BAR from Xen (from kernel 5.17)
+* Fri May 13 2022 Andrew Lindh <andrew@netplex.net> - 4.19.227-2
+- Fix UEFI Dom0 boot EFIFB with 64 bit BAR from Xen (backport from kernel 5.17)
 
 * Thu Feb 03 2022 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.227-1
 - Fixes issue #522
