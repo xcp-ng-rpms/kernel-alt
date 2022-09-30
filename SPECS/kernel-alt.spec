@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 2%{?dist}
+Release: 3%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1044,6 +1044,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Fri Sep 30 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.227-3
+- Rebuild for XCP-ng 8.3 alpha
+
 * Fri May 13 2022 Andrew Lindh <andrew@netplex.net> - 4.19.227-2
 - Fix UEFI Dom0 boot EFIFB with 64 bit BAR from Xen (backport from kernel 5.17)
 
