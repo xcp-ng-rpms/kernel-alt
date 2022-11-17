@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 2%{?dist}
+Release: 4%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -43,9 +43,10 @@ BuildRequires: python2-devel
 BuildRequires: asciidoc xmlto
 BuildRequires: openssl-devel
 AutoReqProv: no
-Provides: kernel-uname-r = %{uname}
-Provides: kernel = %{version}-%{release}
-Provides: kernel-%{_arch} = %{version}-%{release}
+# Don't provide kernel Provides: we don't want kernel-alt to be pulled instead of main kernel
+#Provides: kernel-uname-r = %{uname}
+#Provides: kernel = %{version}-%{release}
+#Provides: kernel-%{_arch} = %{version}-%{release}
 Requires(post): coreutils kmod
 # xcp-python-libs required for handling grub configuration
 Requires(post): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
@@ -717,9 +718,10 @@ Provides: gitsha(ssh://git@code.citrite.net/XS/linux.pg.git) = cb3c28f7e8213ef44
 License: GPLv2
 Summary: Header files for the Linux kernel for use by glibc
 Group: Development/System
-Obsoletes: glibc-kernheaders < 3.0-46
-Provides: glibc-kernheaders = 3.0-46
-Provides: kernel-headers = %{uname}
+# Don't provide kernel Provides: we don't want kernel-alt to be pulled instead of main kernel
+#Obsoletes: glibc-kernheaders < 3.0-46
+#Provides: glibc-kernheaders = 3.0-46
+#Provides: kernel-headers = %{uname}
 Conflicts: kernel-headers < %{uname}
 
 %description headers
@@ -736,8 +738,9 @@ License: GPLv2
 Summary: Development package for building kernel modules to match the %{uname} kernel
 Group: System Environment/Kernel
 AutoReqProv: no
-Provides: kernel-devel-%{_arch} = %{version}-%{release}
-Provides: kernel-devel-uname-r = %{uname}
+# Don't provide kernel Provides: we don't want kernel-alt to be pulled instead of main kernel
+#Provides: kernel-devel-%{_arch} = %{version}-%{release}
+#Provides: kernel-devel-uname-r = %{uname}
 Requires: elfutils-libelf-devel
 
 %description devel
@@ -1044,6 +1047,10 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* next
+- Don't provide kernel Provides
+- We don't want kernel-alt to be pulled as build deps instead of main kernel packages
+
 * Fri May 13 2022 Andrew Lindh <andrew@netplex.net> - 4.19.227-2
 - Fix UEFI Dom0 boot EFIFB with 64 bit BAR from Xen (backport from kernel 5.17)
 
