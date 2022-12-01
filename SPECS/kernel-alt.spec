@@ -1,4 +1,4 @@
-%define uname 4.19.227
+%define uname 4.19.265
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 4%{?dist}
+Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -417,7 +417,8 @@ Patch313: gvt-use-xs-vgpu-type.patch
 #Patch317: xengt-fix-shutdown-failures.patch
 #Patch318: xengt-i915-gem-vgtbuffer.patch
 #Patch319: xengt-gtt-2m-alignment.patch
-Patch320: net-core__order-3_frag_allocator_causes_swiotlb_bouncing_under_xen.patch
+#Merged Upstream
+#Patch320: net-core__order-3_frag_allocator_causes_swiotlb_bouncing_under_xen.patch
 Patch321: idle_cpu-return-0-during-softirq.patch
 Patch322: default-xen-swiotlb-size-128MiB.patch
 #Merged Upstream 
@@ -698,6 +699,44 @@ Patch1207: patch-4.19.225-226
 Patch1208: patch-4.19.226-227
 Patch1209: xen-x86-obtain-upper-32-bits-of-video-frame-buffer-address-for-dom0.backport.patch
 Patch1210: xen-x86-obtain-full-video-frame-buffer-address-for-Dom0-also-under-EFI.backport.patch
+Patch1211: patch-4.19.227-228
+Patch1212: patch-4.19.228-229
+Patch1213: patch-4.19.229-230
+Patch1214: patch-4.19.230-231
+Patch1215: patch-4.19.231-232
+Patch1216: patch-4.19.232-233
+Patch1217: patch-4.19.233-234
+Patch1218: patch-4.19.234-235
+Patch1219: patch-4.19.235-236
+Patch1220: patch-4.19.236-237
+Patch1221: patch-4.19.237-238
+Patch1222: patch-4.19.238-239
+Patch1223: patch-4.19.239-240
+Patch1224: patch-4.19.240-241
+Patch1225: patch-4.19.241-242
+Patch1226: patch-4.19.242-243
+Patch1227: patch-4.19.243-244
+Patch1228: patch-4.19.244-245
+Patch1229: patch-4.19.245-246
+Patch1230: patch-4.19.246-247
+Patch1231: patch-4.19.247-248
+Patch1232: patch-4.19.248-249
+Patch1233: patch-4.19.249-250
+Patch1234: patch-4.19.250-251
+Patch1235: patch-4.19.251-252
+Patch1236: patch-4.19.252-253
+Patch1237: patch-4.19.253-254
+Patch1238: patch-4.19.254-255
+Patch1239: patch-4.19.255-256
+Patch1240: patch-4.19.256-257
+Patch1241: patch-4.19.257-258
+Patch1242: patch-4.19.258-259
+Patch1243: patch-4.19.259-260
+Patch1244: patch-4.19.260-261
+Patch1245: patch-4.19.261-262
+Patch1246: patch-4.19.262-263
+Patch1247: patch-4.19.263-264
+Patch1248: patch-4.19.264-265
 
 Provides: gitsha(ssh://git@code.citrite.net/XSU/linux-stable.git) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(ssh://git@code.citrite.net/XS/linux.pg.git) = cb3c28f7e8213ef44e5c06369b577a18b86af291
@@ -1047,7 +1086,8 @@ fi
 %{python2_sitearch}/*
 
 %changelog
-* next
+* Mon Nov 14 2022 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.265-1
+- Update patch level to 4.19.265
 - Don't provide kernel Provides
 - We don't want kernel-alt to be pulled as build deps instead of main kernel packages
 
