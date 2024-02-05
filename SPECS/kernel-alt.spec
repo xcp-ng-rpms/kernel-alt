@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 4%{?dist}
+Release: 5%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -49,9 +49,9 @@ AutoReqProv: no
 #Provides: kernel-%{_arch} = %{version}-%{release}
 Requires(post): coreutils kmod
 # xcp-python-libs required for handling grub configuration
-Requires(post): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
-Requires(postun): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
-Requires(posttrans): xcp-python-libs >= 2.3.2-1.4.xcpng8.1
+Requires(post): xcp-python-libs >= 3.0.2-4.2.xcpng8.3
+Requires(postun): xcp-python-libs >= 3.0.2-4.2.xcpng8.3
+Requires(posttrans): xcp-python-libs >= 3.0.2-4.2.xcpng8.3
 Requires(posttrans): coreutils dracut kmod
 
 
@@ -949,7 +949,7 @@ if [ $1 == 1 ]; then
     # Add grub entry upon initial installation if the package is installed manually
     # During system installation, the bootloader isn't installed yet so grub is updated as a later task.
     if [ -f /boot/grub/grub.cfg -o -f /boot/efi/EFI/xenserver/grub.cfg ]; then
-        python /usr/lib/python2.7/site-packages/xcp/updategrub.py add kernel-alt %{uname}
+        python /opt/xensource/bin/updategrub.py add kernel-alt %{uname}
     else
         echo "Skipping grub configuration during host installation."
     fi
@@ -975,7 +975,7 @@ if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
         OLDVERSION=$(cat %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version)
         rm %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
         if [ "$OLDVERSION" != %{uname} ]; then
-            python /usr/lib/python2.7/site-packages/xcp/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
+            python /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
         fi
     else
         # No file? Then we are probably upgrading an old kernel-alt package
@@ -983,7 +983,7 @@ if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
         # If it's 4.19.102-4 then there will be a grub entry to replace
         # Else there won't be (except if manually added)
         # The following will replace the entry if exists or just add the new one if not
-        python /usr/lib/python2.7/site-packages/xcp/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
+        python /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
     fi
 fi
 
@@ -991,7 +991,7 @@ fi
 %postun
 if [ $1 == 0 ]; then
     # remove grub entry upon uninstallation
-    python /usr/lib/python2.7/site-packages/xcp/updategrub.py remove kernel-alt %{uname} --ignore-missing
+    python /opt/xensource/bin/updategrub.py remove kernel-alt %{uname} --ignore-missing
 else
     # write current version in a file for the upgraded RPM posttrans to handle grub config update
     echo %{uname} > %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
@@ -1047,6 +1047,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Mon Feb 05 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.227-5
+- use updategroup.py from /opt/xensource/bin
+
 * Thu Oct 06 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.227-4
 - Don't provide kernel Provides
 - We don't want kernel-alt to be pulled as build deps instead of main kernel packages
