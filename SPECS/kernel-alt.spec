@@ -1,4 +1,4 @@
-%define uname 4.19.227
+%define uname 4.19.309
 %define short_uname 4.19
 %define base_version 4.19.19
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 5%{?dist}
+Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -330,7 +330,8 @@ Patch237: hide-nr_cpus-warning.patch
 Patch238: disable-pm-timer.patch
 Patch239: net-Do-not-scrub-ignore_df-within-the-same-name-spac.patch
 Patch240: enable-fragmention-gre-packets.patch
-Patch241: CA-285778-emulex-nic-ip-hdr-len.patch
+#Merged Upstream
+#Patch241: CA-285778-emulex-nic-ip-hdr-len.patch
 Patch242: cifs-Change-the-default-value-SecFlags-to-0x83.patch
 #Merged Upstream 
 #Patch243: call-kexec-before-offlining-noncrashing-cpus.patch
@@ -417,7 +418,8 @@ Patch313: gvt-use-xs-vgpu-type.patch
 #Patch317: xengt-fix-shutdown-failures.patch
 #Patch318: xengt-i915-gem-vgtbuffer.patch
 #Patch319: xengt-gtt-2m-alignment.patch
-Patch320: net-core__order-3_frag_allocator_causes_swiotlb_bouncing_under_xen.patch
+#Merged Upstream
+#Patch320: net-core__order-3_frag_allocator_causes_swiotlb_bouncing_under_xen.patch
 Patch321: idle_cpu-return-0-during-softirq.patch
 Patch322: default-xen-swiotlb-size-128MiB.patch
 #Merged Upstream 
@@ -698,6 +700,88 @@ Patch1207: patch-4.19.225-226
 Patch1208: patch-4.19.226-227
 Patch1209: xen-x86-obtain-upper-32-bits-of-video-frame-buffer-address-for-dom0.backport.patch
 Patch1210: xen-x86-obtain-full-video-frame-buffer-address-for-Dom0-also-under-EFI.backport.patch
+Patch1211: patch-4.19.227-228
+Patch1212: patch-4.19.228-229
+Patch1213: patch-4.19.229-230
+Patch1214: patch-4.19.230-231
+Patch1215: patch-4.19.231-232
+Patch1216: patch-4.19.232-233
+Patch1217: patch-4.19.233-234
+Patch1218: patch-4.19.234-235
+Patch1219: patch-4.19.235-236
+Patch1220: patch-4.19.236-237
+Patch1221: patch-4.19.237-238
+Patch1222: patch-4.19.238-239
+Patch1223: patch-4.19.239-240
+Patch1224: patch-4.19.240-241
+Patch1225: patch-4.19.241-242
+Patch1226: patch-4.19.242-243
+Patch1227: patch-4.19.243-244
+Patch1228: patch-4.19.244-245
+Patch1229: patch-4.19.245-246
+Patch1230: patch-4.19.246-247
+Patch1231: patch-4.19.247-248
+Patch1232: patch-4.19.248-249
+Patch1233: patch-4.19.249-250
+Patch1234: patch-4.19.250-251
+Patch1235: patch-4.19.251-252
+Patch1236: patch-4.19.252-253
+Patch1237: patch-4.19.253-254
+Patch1238: patch-4.19.254-255
+Patch1239: patch-4.19.255-256
+Patch1240: patch-4.19.256-257
+Patch1241: patch-4.19.257-258
+Patch1242: patch-4.19.258-259
+Patch1243: patch-4.19.259-260
+Patch1244: patch-4.19.260-261
+Patch1245: patch-4.19.261-262
+Patch1246: patch-4.19.262-263
+Patch1247: patch-4.19.263-264
+Patch1248: patch-4.19.264-265
+Patch1249: patch-4.19.265-266
+Patch1250: patch-4.19.266-267
+Patch1251: patch-4.19.267-268
+Patch1252: patch-4.19.268-269
+Patch1253: patch-4.19.269-270
+Patch1254: patch-4.19.270-271
+Patch1255: patch-4.19.271-272
+Patch1256: patch-4.19.272-273
+Patch1257: patch-4.19.273-274
+Patch1258: patch-4.19.274-275
+Patch1259: patch-4.19.275-276
+Patch1260: patch-4.19.276-277
+Patch1261: patch-4.19.277-278
+Patch1262: patch-4.19.278-279
+Patch1263: patch-4.19.279-280
+Patch1264: patch-4.19.280-281
+Patch1265: patch-4.19.281-282
+Patch1266: patch-4.19.282-283
+Patch1267: patch-4.19.283-284
+Patch1268: patch-4.19.284-285
+Patch1269: patch-4.19.285-286
+Patch1270: patch-4.19.286-287
+Patch1271: patch-4.19.287-288
+Patch1272: patch-4.19.288-289
+Patch1273: patch-4.19.289-290
+Patch1274: patch-4.19.290-291
+Patch1275: patch-4.19.291-292
+Patch1276: patch-4.19.292-293
+Patch1277: patch-4.19.293-294
+Patch1278: patch-4.19.294-295
+Patch1279: patch-4.19.295-296
+Patch1280: patch-4.19.296-297
+Patch1281: patch-4.19.297-298
+Patch1282: patch-4.19.298-299
+Patch1283: patch-4.19.299-300
+Patch1284: patch-4.19.300-301
+Patch1285: patch-4.19.301-302
+Patch1286: patch-4.19.302-303
+Patch1287: patch-4.19.303-304
+Patch1288: patch-4.19.304-305
+Patch1289: patch-4.19.305-306
+Patch1290: patch-4.19.306-307
+Patch1291: patch-4.19.307-308
+Patch1292: patch-4.19.308-309
 
 Provides: gitsha(ssh://git@code.citrite.net/XSU/linux-stable.git) = dffbba4348e9686d6bf42d54eb0f2cd1c4fb3520
 Provides: gitsha(ssh://git@code.citrite.net/XS/linux.pg.git) = cb3c28f7e8213ef44e5c06369b577a18b86af291
@@ -1047,6 +1131,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Fri Mar 15 2024 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.309-1
+- Updated to match upstream
+
 * Mon Feb 05 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.227-5
 - use updategroup.py from /opt/xensource/bin
 
