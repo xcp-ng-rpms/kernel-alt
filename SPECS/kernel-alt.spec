@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 5%{?dist}
+Release: 6%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -949,7 +949,7 @@ if [ $1 == 1 ]; then
     # Add grub entry upon initial installation if the package is installed manually
     # During system installation, the bootloader isn't installed yet so grub is updated as a later task.
     if [ -f /boot/grub/grub.cfg -o -f /boot/efi/EFI/xenserver/grub.cfg ]; then
-        python /opt/xensource/bin/updategrub.py add kernel-alt %{uname}
+        /opt/xensource/bin/updategrub.py add kernel-alt %{uname}
     else
         echo "Skipping grub configuration during host installation."
     fi
@@ -975,7 +975,7 @@ if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
         OLDVERSION=$(cat %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version)
         rm %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
         if [ "$OLDVERSION" != %{uname} ]; then
-            python /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
+            /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
         fi
     else
         # No file? Then we are probably upgrading an old kernel-alt package
@@ -983,7 +983,7 @@ if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
         # If it's 4.19.102-4 then there will be a grub entry to replace
         # Else there won't be (except if manually added)
         # The following will replace the entry if exists or just add the new one if not
-        python /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
+        /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
     fi
 fi
 
@@ -991,7 +991,7 @@ fi
 %postun
 if [ $1 == 0 ]; then
     # remove grub entry upon uninstallation
-    python /opt/xensource/bin/updategrub.py remove kernel-alt %{uname} --ignore-missing
+    /opt/xensource/bin/updategrub.py remove kernel-alt %{uname} --ignore-missing
 else
     # write current version in a file for the upgraded RPM posttrans to handle grub config update
     echo %{uname} > %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
@@ -1047,8 +1047,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Apr 04 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.227-6
+- Stop overruling interpreter in updategrub.py
+
 * Mon Feb 05 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.227-5
-- use updategroup.py from /opt/xensource/bin
+- Use updategrub.py from /opt/xensource/bin
 
 * Thu Oct 06 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 4.19.227-4
 - Don't provide kernel Provides
