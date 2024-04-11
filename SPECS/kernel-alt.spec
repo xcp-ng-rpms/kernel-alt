@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 1%{?dist}
+Release: 1.0.lenovotest.1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1131,6 +1131,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Apr 11 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.309-1.0.lenovotest.1
+- Test release for Lenovo Fan issue
+
 * Fri Mar 15 2024 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.309-1
 - Updated to match upstream
 
