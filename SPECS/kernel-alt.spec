@@ -63,10 +63,10 @@ AutoReqProv: no
 #Provides: kernel = %{version}-%{release}
 #Provides: kernel-%{_arch} = %{version}-%{release}
 Requires(post): coreutils kmod
-# xcp-python-libs required for handling grub configuration
-Requires(post): xcp-python-libs >= 3.0.2-4.2.xcpng8.3
-Requires(postun): xcp-python-libs >= 3.0.2-4.2.xcpng8.3
-Requires(posttrans): xcp-python-libs >= 3.0.2-4.2.xcpng8.3
+# python3-xcp-libs required for handling grub configuration
+Requires(post): python3-xcp-libs >= 3.0.2-4.2.xcpng8.3
+Requires(postun): python3-xcp-libs >= 3.0.2-4.2.xcpng8.3
+Requires(posttrans): python3-xcp-libs >= 3.0.2-4.2.xcpng8.3
 Requires(posttrans): coreutils dracut kmod
 
 
@@ -1097,6 +1097,7 @@ fi
 - Import kernel source v4.19.316
 - Rebase and rework needed patches from main kernel repo
 - Sync spec file with main kernel repo v4.19.19-8.0.34.1
+- Fix Requires on python3-xcp-libs
 
 * Thu Apr 04 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.227-6
 - Stop overruling interpreter in updategrub.py
