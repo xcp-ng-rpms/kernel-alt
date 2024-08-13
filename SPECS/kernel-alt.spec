@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1086,6 +1086,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Tue Aug 13 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.265-2
+- Enable CONFIG_X86_AMD_PLATFORM_DEVICE in kernel config
+
 * Mon Nov 14 2022 Rushikesh Jadhav <rushikesh7@gmail.com> - 4.19.265-1
 - Update patch level to 4.19.265
 - Don't provide kernel Provides
