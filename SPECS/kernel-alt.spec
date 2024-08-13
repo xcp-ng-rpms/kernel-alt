@@ -1093,11 +1093,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
-* Tue Jun 25 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.316+1-1
+* Tue Aug 13 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.316+1-1
 - Import kernel source v4.19.316
 - Rebase and rework needed patches from main kernel repo
 - Sync spec file with main kernel repo v4.19.19-8.0.34.1
-- Fix Requires on python3-xcp-libs
+- Fix Requires on xcp-python-libs for 8.2
 
 * Thu Apr 04 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.227-6
 - Stop overruling interpreter in updategrub.py
