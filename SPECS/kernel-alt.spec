@@ -991,7 +991,7 @@ if [ $1 == 1 ]; then
     # Add grub entry upon initial installation if the package is installed manually
     # During system installation, the bootloader isn't installed yet so grub is updated as a later task.
     if [ -f /boot/grub/grub.cfg -o -f /boot/efi/EFI/xenserver/grub.cfg ]; then
-        /opt/xensource/bin/updategrub.py add kernel-alt %{uname}
+        python /opt/xensource/bin/updategrub.py add kernel-alt %{uname}
     else
         echo "Skipping grub configuration during host installation."
     fi
@@ -1017,7 +1017,7 @@ if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
         OLDVERSION=$(cat %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version)
         rm %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
         if [ "$OLDVERSION" != %{uname} ]; then
-            /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
+            python /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version $OLDVERSION
         fi
     else
         # No file? Then we are probably upgrading an old kernel-alt package
@@ -1025,7 +1025,7 @@ if [ -e %{_localstatedir}/lib/rpm-state/update-grub-for-%{name}-%{uname} ]; then
         # If it's 4.19.102-4 then there will be a grub entry to replace
         # Else there won't be (except if manually added)
         # The following will replace the entry if exists or just add the new one if not
-        /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
+        python /opt/xensource/bin/updategrub.py replace kernel-alt %{uname} --old-version 4.19.102 --ignore-missing
     fi
 fi
 
@@ -1033,7 +1033,7 @@ fi
 %postun
 if [ $1 == 0 ]; then
     # remove grub entry upon uninstallation
-    /opt/xensource/bin/updategrub.py remove kernel-alt %{uname} --ignore-missing
+    python /opt/xensource/bin/updategrub.py remove kernel-alt %{uname} --ignore-missing
 else
     # write current version in a file for the upgraded RPM posttrans to handle grub config update
     echo %{uname} > %{_localstatedir}/lib/rpm-state/%{name}-uninstall-version
