@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1093,6 +1093,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Tue Aug 13 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.316+1-2
+- Enable CONFIG_X86_AMD_PLATFORM_DEVICE in kernel config
+
 * Tue Jun 25 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.316+1-1
 - Import kernel source v4.19.316
 - Rebase and rework needed patches from main kernel repo
