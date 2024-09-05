@@ -1,6 +1,6 @@
-%define uname 4.19.316+1
+%define uname 4.19.320+1
 %define short_uname 4.19
-%define base_version 4.19.316
+%define base_version 4.19.320
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
 
 # Control whether we perform a compat. check against published ABI.
@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 2%{?dist}
+Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -71,7 +71,7 @@ Requires(posttrans): python3-xcp-libs >= 3.0.2-4.2.xcpng8.3
 Requires(posttrans): coreutils dracut kmod
 
 
-Source0: kernel-4.19.316.tar.gz
+Source0: kernel-4.19.320.tar.gz
 Source1: kernel-x86_64.config
 Source2: macros.kernel
 
@@ -1127,6 +1127,11 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Tue Sep 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.320+1-1
+- Sync spec file with main kernel repo v4.19.19-8.0.36.1
+- Import new patches from main kernel repo (already merged upstream)
+- Update kernel sources to v4.19.320
+
 * Tue Aug 13 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.316+1-2
 - Enable CONFIG_X86_AMD_PLATFORM_DEVICE in kernel config
 
