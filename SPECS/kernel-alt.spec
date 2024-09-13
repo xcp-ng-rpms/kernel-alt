@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 1%{?dist}
+Release: 2%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1127,6 +1127,10 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Fri Sep 13 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.320+1-2
+- Disable PERF_EVENTS_INTEL_RAPL and INTEL_POWERCLAMP in kernel config as done
+  in the main kernel for performance reasons
+
 * Tue Sep 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.320+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.36.1
 - Import new patches from main kernel repo (already merged upstream)
