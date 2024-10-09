@@ -1,0 +1,28 @@
+From cb96ff6c14b4538205807155a92a5e8963d030df Mon Sep 17 00:00:00 2001
+From: Thierry Escande <thierry.escande@vates.tech>
+Date: Wed, 9 Oct 2024 18:37:04 +0200
+Subject: [PATCH] net: convert missing is_local to bitops
+Content-Type: text/plain; charset = "utf-8"
+Content-Transfert-Encoding: 8bit
+
+Signed-off-by: Thierry Escande <thierry.escande@vates.tech>
+---
+ net/bridge/br_fdb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 8997eaa2f3a8..b1b203ed68cc 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -680,7 +680,7 @@ int br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+                }
+ 
+                /* attempt to update an entry for a local interface */
+-               if (unlikely(fdb->is_local)) {
++               if (unlikely(test_bit(BR_FDB_LOCAL, &fdb->flags))) {
+                        if (net_ratelimit())
+                                br_warn(br, "received packet on %s with "
+                                                "own address as source address\n",
+-- 
+2.43.0
+

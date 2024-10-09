@@ -126,7 +126,7 @@ index eff9d28d37ca..06bbe29ad97b 100644
 +               }
 +
 +               /* attempt to update an entry for a local interface */
-+               if (unlikely(fdb->is_local)) {
++               if (unlikely(test_bit(BR_FDB_LOCAL, &fdb->flags))) {
 +                       if (net_ratelimit())
 +                               br_warn(br, "received packet on %s with "
 +                                               "own address as source address\n",

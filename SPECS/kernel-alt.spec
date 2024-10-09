@@ -1,6 +1,6 @@
-%define uname 4.19.320+1
+%define uname 4.19.322+1
 %define short_uname 4.19
-%define base_version 4.19.320
+%define base_version 4.19.322
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
 
 # Control whether we perform a compat. check against published ABI.
@@ -23,7 +23,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 2%{?dist}
+Release: 1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -71,7 +71,7 @@ Requires(posttrans): python3-xcp-libs >= 3.0.2-4.2.xcpng8.3
 Requires(posttrans): coreutils dracut kmod
 
 
-Source0: kernel-4.19.320.tar.gz
+Source0: kernel-4.19.322.tar.gz
 Source1: kernel-x86_64.config
 Source2: macros.kernel
 
@@ -747,6 +747,9 @@ Source5: prepare-build
 #Patch1000: ceph.patch
 #Patch1001: tg3-v4.19.315.patch
 
+# kernel-alt specific patches
+Patch2000: 0001-tools-perf-define-__ALIGN_KERNEL-missing-macro.patch
+
 %description
 The kernel package contains the Linux kernel (vmlinuz), the core of any
 Linux operating system. The kernel handles the basic functions of the operating
@@ -1131,6 +1134,10 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
+- Sync spec file with main kernel repo v4.19.19-8.0.37
+- Update kernel sources to v4.19.322
+
 * Fri Sep 13 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.320+1-2
 - Disable PERF_EVENTS_INTEL_RAPL and INTEL_POWERCLAMP in kernel config as done
   in the main kernel for performance reasons
