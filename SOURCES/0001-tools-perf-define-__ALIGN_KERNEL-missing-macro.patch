@@ -1,0 +1,39 @@
+From 75910df3142a5d07184122dbff4d2d6af6447dda Mon Sep 17 00:00:00 2001
+From: Thierry Escande <thierry.escande@vates.tech>
+Date: Wed, 9 Oct 2024 18:13:34 +0200
+Subject: [PATCH] tools/perf: define __ALIGN_KERNEL missing macro
+Content-Type: text/plain; charset = "utf-8"
+Content-Transfert-Encoding: 8bit
+
+Starting kernel sources v4.19.321, the __ALIGN_KERNEL macros has been
+moved to a new header file that the XCP-ng kernel_headers package
+doesn't have, so building tools/perf fails since it is not possible to
+replace kernel headers with the kernel-alt ones system-wide. This patch
+declares the __ALIGN_KERNEL macro directly in the header using it.
+
+Signed-off-by: Thierry Escande <thierry.escande@vates.tech>
+---
+ tools/include/linux/bitmap.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
+index b5abe59bad40..93c05e7b97f8 100644
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -8,6 +8,13 @@
+ #include <stdlib.h>
+ #include <linux/kernel.h>
+ 
++#ifndef __ALIGN_KERNEL
++#define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
++#ifndef __ALIGN_KERNEL_MASK
++#define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
++#endif
++#endif
++
+ #define DECLARE_BITMAP(name,bits) \
+ 	unsigned long name[BITS_TO_LONGS(bits)]
+ 
+-- 
+2.43.0
+
