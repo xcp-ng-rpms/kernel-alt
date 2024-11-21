@@ -791,25 +791,25 @@ Requires: elfutils-libelf-devel
 This package provides kernel headers and makefiles sufficient to build modules
 against the %{uname} kernel.
 
-%package -n perf-alt
-Summary: Performance monitoring for the Linux kernel
-License: GPLv2
-Conflicts: perf
-%description -n perf-alt
-This package contains the perf tool, which enables performance monitoring
-of the Linux kernel.
-
-%global pythonperfsum Python bindings for apps which will manipulate perf events
-%global pythonperfdesc A Python module that permits applications \
-written in the Python programming language to use the interface \
-to manipulate perf events.
-
-%package -n python3-perf-alt
-Summary: %{pythonperfsum}
-Provides: python3-perf-alt
-Conflicts: python3-perf
-%description -n python3-perf-alt
-%{pythonperfdesc}
+# %package -n perf-alt
+# Summary: Performance monitoring for the Linux kernel
+# License: GPLv2
+# Conflicts: perf
+# %description -n perf-alt
+# This package contains the perf tool, which enables performance monitoring
+# of the Linux kernel.
+# 
+# %global pythonperfsum Python bindings for apps which will manipulate perf events
+# %global pythonperfdesc A Python module that permits applications \
+# written in the Python programming language to use the interface \
+# to manipulate perf events.
+# 
+# %package -n python3-perf-alt
+# Summary: %{pythonperfsum}
+# Provides: python3-perf-alt
+# Conflicts: python3-perf
+# %description -n python3-perf-alt
+# %{pythonperfdesc}
 
 %prep
 %autosetup -p1 -n kernel-%{base_version}
@@ -873,18 +873,18 @@ make %{?_smp_mflags} modules
     %{SOURCE3} -k %{SOURCE4} -s Module.symvers || exit 1
 %endif
 
-# make perf
-%global perf_make \
-  make EXTRA_CFLAGS="${RPM_OPT_FLAGS}" LDFLAGS="%{__global_ldflags}" %{?cross_opts} V=1 NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 NO_JVMTI=1 prefix=%{_prefix}
-%global perf_python3 -C tools/perf PYTHON=%{__python3}
-# perf
-# make sure check-headers.sh is executable
-chmod +x tools/perf/check-headers.sh
-%{perf_make} %{perf_python3} all
-
-pushd tools/perf/Documentation/
-make %{?_smp_mflags} man
-popd
+# # make perf
+# %global perf_make \
+#   make EXTRA_CFLAGS="${RPM_OPT_FLAGS}" LDFLAGS="%{__global_ldflags}" %{?cross_opts} V=1 NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 NO_JVMTI=1 prefix=%{_prefix}
+# %global perf_python3 -C tools/perf PYTHON=%{__python3}
+# # perf
+# # make sure check-headers.sh is executable
+# chmod +x tools/perf/check-headers.sh
+# %{perf_make} %{perf_python3} all
+# 
+# pushd tools/perf/Documentation/
+# make %{?_smp_mflags} man
+# popd
 
 # eBPF support: pahole encodes the type infos into a small (3MB) .BTF section:
 cp vmlinux                                     tmp-vmlinux-with-btf
@@ -924,8 +924,8 @@ install -m 755 vmlinux %{buildroot}/usr/lib/debug/lib/modules/%{uname}
 # Install -headers files
 make INSTALL_HDR_PATH=%{buildroot}/usr headers_install
 
-# perf tool binary and supporting scripts/binaries
-%{perf_make} %{perf_python3} DESTDIR=%{buildroot} lib=%{_lib} install-bin install-traceevent-plugins
+# # perf tool binary and supporting scripts/binaries
+# %{perf_make} %{perf_python3} DESTDIR=%{buildroot} lib=%{_lib} install-bin install-traceevent-plugins
 # remove the 'trace' symlink.
 rm -f %{buildroot}%{_bindir}/trace
 # remove the perf-tips
@@ -940,12 +940,12 @@ rm -rf %{buildroot}/usr/lib/perf/examples
 # remove the stray header file that somehow got packaged in examples
 rm -rf %{buildroot}/usr/lib/perf/include/bpf/
 
-# python-perf extension
-%{perf_make} %{perf_python3} DESTDIR=%{buildroot} install-python_ext
-
-# perf man pages (note: implicit rpm magic compresses them later)
-install -d %{buildroot}/%{_mandir}/man1
-install -pm0644 tools/perf/Documentation/*.1 %{buildroot}/%{_mandir}/man1/
+# # python-perf extension
+# %{perf_make} %{perf_python3} DESTDIR=%{buildroot} install-python_ext
+# 
+# # perf man pages (note: implicit rpm magic compresses them later)
+# install -d %{buildroot}/%{_mandir}/man1
+# install -pm0644 tools/perf/Documentation/*.1 %{buildroot}/%{_mandir}/man1/
 
 # Install -devel files
 install -d -m 755 %{buildroot}%{_usrsrc}/kernels/%{uname}-%{_arch}
@@ -1122,20 +1122,20 @@ fi
 %verify(not mtime) /usr/src/kernels/%{uname}-%{_arch}
 %{_rpmconfigdir}/macros.d/macros.kernel
 
-%files -n perf-alt
-%{_bindir}/perf
-%dir %{_libdir}/traceevent
-%{_libdir}/traceevent/plugins/
-%{_libexecdir}/perf-core
-%{_datadir}/perf-core/
-%{_mandir}/man[1-8]/perf*
-%{_sysconfdir}/bash_completion.d/perf
-%doc tools/perf/Documentation/examples.txt
-%license COPYING
-
-%files -n python3-perf-alt
-%license COPYING
-%{python3_sitearch}/*
+# %files -n perf-alt
+# %{_bindir}/perf
+# %dir %{_libdir}/traceevent
+# %{_libdir}/traceevent/plugins/
+# %{_libexecdir}/perf-core
+# %{_datadir}/perf-core/
+# %{_mandir}/man[1-8]/perf*
+# %{_sysconfdir}/bash_completion.d/perf
+# %doc tools/perf/Documentation/examples.txt
+# %license COPYING
+# 
+# %files -n python3-perf-alt
+# %license COPYING
+# %{python3_sitearch}/*
 
 %changelog
 * Thu Nov 21 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.322+1-1.0.1
@@ -1146,6 +1146,7 @@ fi
   - Ajust AFTER_LINK value (and kbuild-AFTER_LINK.patch !?) for debugedit
     location change
   - New libbpf-proto-fix.patch to fix prototype mismatch
+  - Drop perf stuff, which still won't build after all
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
