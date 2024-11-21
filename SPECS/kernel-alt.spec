@@ -1023,6 +1023,10 @@ find %{buildroot} -name '.*.cmd' -type f -delete
 # Thus, we can install it here (/lib/.../build is an absolute symlink to this path)
 install -m 644 vmlinux.btf %{buildroot}/usr/src/kernels/%{uname}-%{_arch}/vmlinux
 
+# Just to let the checks pass - wtf, those are *source files*, right?
+find %{buildroot}/usr/src/kernels/%{uname}-%{_arch}/scripts/ -type f |
+    xargs sed -i -e 's,#!/usr/bin/env python$,#!/usr/bin/python3,' -e 's,#!/usr/bin/python$,#!/usr/bin/python3,'
+
 %check
 # Check that the .BTF section is present at the start of the file:
 objdump -h %{buildroot}/usr/src/kernels/%{uname}-%{_arch}/vmlinux|grep " 0 .BTF"
@@ -1147,6 +1151,8 @@ fi
     location change
   - New libbpf-proto-fix.patch to fix prototype mismatch
   - Drop perf stuff, which still won't build after all
+  - Hack installed python scripts in /usr/src to pass check for unversionned
+    interpreter
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
