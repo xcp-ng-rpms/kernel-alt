@@ -752,6 +752,7 @@ Source5: prepare-build
 
 # kernel-alt specific patches
 Patch2000: 0001-tools-perf-define-__ALIGN_KERNEL-missing-macro.patch
+Patch2001: libbpf-proto-fix.patch
 
 %description
 The kernel package contains the Linux kernel (vmlinuz), the core of any
@@ -1144,6 +1145,7 @@ fi
   - Adjust config for gcc 14.2.1
   - Ajust AFTER_LINK value (and kbuild-AFTER_LINK.patch !?) for debugedit
     location change
+  - New libbpf-proto-fix.patch to fix prototype mismatch
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37

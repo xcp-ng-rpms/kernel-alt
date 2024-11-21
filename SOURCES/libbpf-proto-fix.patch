@@ -1,0 +1,11 @@
+--- kernel-4.19.322/tools/lib/bpf/libbpf.h.orig	2024-11-21 17:15:06.859872784 +0100
++++ kernel-4.19.322/tools/lib/bpf/libbpf.h	2024-11-21 17:15:21.493873640 +0100
+@@ -293,7 +293,7 @@
+ 
+ typedef enum bpf_perf_event_ret (*bpf_perf_event_print_t)(void *event,
+ 							  void *priv);
+-int bpf_perf_event_read_simple(void *mem, unsigned long size,
++enum bpf_perf_event_ret bpf_perf_event_read_simple(void *mem, unsigned long size,
+ 			       unsigned long page_size,
+ 			       void **buf, size_t *buf_len,
+ 			       bpf_perf_event_print_t fn, void *priv);
