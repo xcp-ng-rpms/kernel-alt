@@ -105,7 +105,7 @@ index c8cf45362bd6..ee9c4d8e1ddf 100755
  		rm -f linux
  	fi
 +	if [ -n "${AFTER_LINK}" ]; then
-+		/usr/lib/rpm/debugedit -b ${RPM_BUILD_DIR} -d /usr/src/debug -i ${2} \
++		/usr/bin/debugedit -b ${RPM_BUILD_DIR} -d /usr/src/debug -i ${2} \
 +			> ${2}.id
 +	fi
  }
