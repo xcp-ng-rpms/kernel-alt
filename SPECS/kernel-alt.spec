@@ -5,6 +5,7 @@
 
 # behaviour we had in el7
 %global _default_patch_fuzz 2
+%global _missing_build_ids_terminate_build 0
 
 # Control whether we perform a compat. check against published ABI.
 # Default enabled: (to override: --without kabichk)
@@ -1153,6 +1154,7 @@ fi
   - Drop perf stuff, which still won't build after all
   - Hack installed python scripts in /usr/src to pass check for unversionned
     interpreter
+  - Tell modern RH macros not to abort on lack of build-id
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
