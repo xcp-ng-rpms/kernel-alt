@@ -26,7 +26,7 @@
 Name: kernel-alt
 License: GPLv2
 Version: %{uname}
-Release: 1%{?dist}
+Release: 1.0.1%{?dist}
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1137,7 +1137,7 @@ fi
 %{python3_sitearch}/*
 
 %changelog
-* Thu Nov 21 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.19-8.0.37.1.0.1
+* Thu Nov 21 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.322+1-1.0.1
 - Build support for Alma10:
   - Switch to full python3
   - Patch fuzz level back to 2
