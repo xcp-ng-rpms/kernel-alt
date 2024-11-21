@@ -3,6 +3,9 @@
 %define base_version 4.19.322
 %define srcpath /usr/src/kernels/%{uname}-%{_arch}
 
+# behaviour we had in el7
+%global _default_patch_fuzz 2
+
 # Control whether we perform a compat. check against published ABI.
 # Default enabled: (to override: --without kabichk)
 #%define do_kabichk  %{?_without_kabichk: 0} %{?!_without_kabichk: 1}
@@ -1135,7 +1138,9 @@ fi
 
 %changelog
 * Thu Nov 21 2024 Yann Dirson <yann.dirson@vates.tech> - 4.19.19-8.0.37.1.0.1
-- Switch to full python3
+- Build support for Alma10:
+  - Switch to full python3
+  - Patch fuzz level back to 2
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
