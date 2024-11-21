@@ -1141,6 +1141,7 @@ fi
 - Build support for Alma10:
   - Switch to full python3
   - Patch fuzz level back to 2
+  - Adjust config for gcc 14.2.1
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
