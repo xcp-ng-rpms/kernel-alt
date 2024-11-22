@@ -33,6 +33,7 @@ ExclusiveOS: Linux
 Summary: The Linux kernel
 BuildRequires: kmod
 BuildRequires: dwarves
+BuildRequires: perl
 
 # These build dependencies are needed for building the main kernel and
 # modules as well live patches.
@@ -1028,6 +1029,10 @@ install -m 644 vmlinux.btf %{buildroot}/usr/src/kernels/%{uname}-%{_arch}/vmlinu
 find %{buildroot}/usr/src/kernels/%{uname}-%{_arch}/scripts/ -type f |
     xargs sed -i -e 's,#!/usr/bin/env python$,#!/usr/bin/python3,' -e 's,#!/usr/bin/python$,#!/usr/bin/python3,'
 
+# Files not in any package (!?)
+rm %{buildroot}/lib/modules/*/modules.builtin.alias.bin
+rm %{buildroot}/usr/lib/debug/lib/modules/*/vmlinux
+
 %check
 # Check that the .BTF section is present at the start of the file:
 objdump -h %{buildroot}/usr/src/kernels/%{uname}-%{_arch}/vmlinux|grep " 0 .BTF"
@@ -1155,6 +1160,7 @@ fi
   - Hack installed python scripts in /usr/src to pass check for unversionned
     interpreter
   - Tell modern RH macros not to abort on lack of build-id
+  - Add missing BuildRequires: perl
 
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
