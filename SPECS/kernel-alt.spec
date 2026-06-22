@@ -22,8 +22,9 @@
 
 Name: kernel-alt
 License: GPLv2
-Version: %{uname}
-Release: 1%{?dist}
+Version: %{base_version}
+Release: 2%{?dist}
+Epoch: 1
 ExclusiveArch: x86_64
 ExclusiveOS: Linux
 Summary: The Linux kernel
@@ -1134,6 +1135,9 @@ fi
 %{python2_sitearch}/*
 
 %changelog
+* Thu Jun 25 2026 Thierry Escande <thierry.escande@vates.tech> - 4.19.322-2
+- Update Version variable in specfile to reflect what's done in main package
+
 * Thu Oct 10 2024 Thierry Escande <thierry.escande@vates.tech> - 4.19.322+1-1
 - Sync spec file with main kernel repo v4.19.19-8.0.37
 - Update kernel sources to v4.19.322
